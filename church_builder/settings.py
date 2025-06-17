@@ -25,7 +25,7 @@ SECRET_KEY = 'church-builder-2025-secure-key-for-demo-f8x9m2p7q1w4r6t3y8u9i5o2a7
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # 고객 시연용으로 True 유지, 실제 운영시에는 False로 변경
-DEBUG = True
+DEBUG = False
 
 # 모든 호스트에서 접근 허용 (고객 시연용)
 # 실제 운영시에는 특정 도메인만 허용하세요
