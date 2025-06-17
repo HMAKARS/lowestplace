@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,16 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# 운영 환경에서는 환경변수로 관리하세요
-SECRET_KEY = 'church-builder-2025-secure-key-for-demo-f8x9m2p7q1w4r6t3y8u9i5o2a7s4d6g9h1j3k5l8z0x2c4v6b8n1m3q5w7e9r2t4y6u8i0o9p8l7k6j5h4g3f2d1s9a8z7x6c5v4b3n2m1'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# 고객 시연용으로 True 유지, 실제 운영시에는 False로 변경
-DEBUG = False
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-# 모든 호스트에서 접근 허용 (고객 시연용)
-# 실제 운영시에는 특정 도메인만 허용하세요
-ALLOWED_HOSTS = ['*']
+# 허용된 호스트 설정
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
 # Application definition
@@ -57,7 +55,7 @@ MIDDLEWARE = [
 # ========== 보안 설정 ==========
 
 # CSRF 보안 설정
-CSRF_COOKIE_SECURE = False  # HTTPS에서는 True로 설정
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_TRUSTED_ORIGINS = [
@@ -65,12 +63,11 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8001',
     'http://127.0.0.1:8000',
     'http://127.0.0.1:8001',
-    # 실제 도메인이 있다면 여기에 추가하세요
-    # 'https://yourdomain.com',
+    # 실제 도메인이 있다면 .env 파일에 추가하세요
 ]
 
 # 세션 보안
-SESSION_COOKIE_SECURE = False  # HTTPS에서는 True로 설정
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_AGE = 3600  # 1시간 후 세션 만료
@@ -80,11 +77,12 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
-# HTTPS 관련 (HTTPS 사용시 활성화)
-# SECURE_SSL_REDIRECT = True
-# SECURE_HSTS_SECONDS = 31536000
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True
+# HTTPS 관련 (HTTPS 사용시 .env에서 True로 설정)
+if config('USE_HTTPS', default=False, cast=bool):
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 ROOT_URLCONF = 'church_builder.urls'
 
@@ -110,12 +108,35 @@ WSGI_APPLICATION = 'church_builder.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# 데이터베이스 엔진에 따른 설정
+DB_ENGINE = config('DB_ENGINE', default='django.db.backends.sqlite3')
+
+if DB_ENGINE == 'django.db.backends.postgresql':
+    # PostgreSQL 설정
+    DATABASES = {
+        'default': {
+            'ENGINE': DB_ENGINE,
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST', default='localhost'),
+            'PORT': config('DB_PORT', default='5432'),
+            'OPTIONS': {
+                'connect_timeout': 20,
+            }
+        }
     }
-}
+else:
+    # SQLite 설정 (기본값)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / config('DATABASE_NAME', default='db.sqlite3'),
+            'OPTIONS': {
+                'timeout': 20,
+            }
+        }
+    }
 
 
 # Password validation
@@ -140,9 +161,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'ko-kr'
+LANGUAGE_CODE = config('LANGUAGE_CODE', default='ko-kr')
 
-TIME_ZONE = 'Asia/Seoul'
+TIME_ZONE = config('TIME_ZONE', default='Asia/Seoul')
 
 USE_I18N = True
 
@@ -183,30 +204,30 @@ LOGGING = {
     },
     'handlers': {
         'file': {
-            'level': 'INFO',
+            'level': config('LOG_LEVEL', default='INFO'),
             'class': 'logging.FileHandler',
             'filename': BASE_DIR / 'logs' / 'django.log',
             'formatter': 'verbose',
         },
         'console': {
-            'level': 'INFO',
+            'level': config('LOG_LEVEL', default='INFO'),
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
         },
     },
     'root': {
         'handlers': ['console', 'file'],
-        'level': 'INFO',
+        'level': config('LOG_LEVEL', default='INFO'),
     },
     'loggers': {
         'django': {
             'handlers': ['console', 'file'],
-            'level': 'INFO',
+            'level': config('LOG_LEVEL', default='INFO'),
             'propagate': False,
         },
         'django.security': {
             'handlers': ['console', 'file'],
-            'level': 'INFO',
+            'level': config('LOG_LEVEL', default='INFO'),
             'propagate': False,
         },
     },
@@ -217,7 +238,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'church-builder-cache',
-        'TIMEOUT': 300,  # 5분 캐시
+        'TIMEOUT': config('CACHE_TIMEOUT', default=300, cast=int),  # 환경변수에서 로드
         'OPTIONS': {
             'MAX_ENTRIES': 1000,
             'CULL_FREQUENCY': 3,
@@ -226,13 +247,18 @@ CACHES = {
 }
 
 # ========== 데이터베이스 최적화 ==========
-DATABASES['default']['OPTIONS'] = {
-    'timeout': 20,
-}
+# (이미 위에서 DATABASES 설정에 포함됨)
 
-# ========== 고객 시연용 메시지 ==========
-print("🏛️ 교회/성당 템플릿 서버가 시작되었습니다!")
-print("📱 랜딩페이지 링크:")
-print("   • 현대적 교회: http://your-ip:8000/landing-modern/")
-print("   • 전통적 성당: http://your-ip:8000/landing-traditional/")
-print("🔐 보안이 강화된 상태로 외부 접근이 허용됩니다.")
+# ========== 개발 환경 정보 출력 ==========
+if DEBUG:
+    print("🏛️ 교회/성당 템플릿 서버가 개발모드로 시작되었습니다!")
+    print("📱 랜딩페이지 링크:")
+    print("   • 메인 페이지: http://localhost:8000/")
+    print("   • 현대적 교회: http://localhost:8000/modern/")
+    print("   • 전통적 성당: http://localhost:8000/traditional/")
+    print("   • 제품 소개: http://localhost:8000/product/")
+    print("   • 레스토랑: http://localhost:8000/restaurant/")
+    print("   • 스타트업: http://localhost:8000/startup/")
+    print("🔧 환경변수로 설정이 관리됩니다 (.env 파일)")
+else:
+    print("🚀 교회/성당 템플릿 서버가 운영모드로 시작되었습니다!")
