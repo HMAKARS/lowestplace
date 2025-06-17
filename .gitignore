@@ -1,0 +1,60 @@
+# ========== Django 관련 ==========
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# ========== 환경 설정 ==========
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ========== 로그 파일 ==========
+logs/
+*.log
+
+# ========== 미디어 파일 ==========
+media/
+
+# ========== 정적 파일 (수집된) ==========
+staticfiles/
+/static/
+
+# ========== IDE 설정 ==========
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ========== OS 관련 ==========
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ========== 백업 파일 ==========
+*.bak
+*.backup
+*.old
+
+# ========== 보안 관련 ==========
+*.key
+*.pem
+*.crt
+secret_key.txt
+
+# ========== 임시 파일 ==========
+*.tmp
+*.temp
+*.swp

@@ -1,0 +1,1241 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ church_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        font-family: 'Noto Serif KR', 'Georgia', serif;
+        line-height: 1.7;
+        color: #2c3e50;
+        background-color: #fafafa;
+    }
+    
+    .header {
+        background: linear-gradient(135deg, #8b4513 0%, #654321 50%, #4a2c17 100%);
+        color: white;
+        padding: 0;
+        box-shadow: 0 3px 20px rgba(0,0,0,0.15);
+        position: relative;
+    }
+    
+    .header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%238b4513" width="100" height="100"/><circle fill="%23a0522d" cx="20" cy="20" r="2" opacity="0.3"/><circle fill="%23a0522d" cx="80" cy="30" r="1.5" opacity="0.3"/><circle fill="%23a0522d" cx="50" cy="70" r="1" opacity="0.3"/><circle fill="%23a0522d" cx="90" cy="80" r="1.5" opacity="0.3"/></svg>') repeat;
+        opacity: 0.1;
+    }
+    
+    .top-bar {
+        background: rgba(0,0,0,0.2);
+        padding: 8px 0;
+        font-size: 0.85em;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .top-bar-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .top-links a {
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+        margin: 0 10px;
+        transition: color 0.3s;
+    }
+    
+    .top-links a:hover {
+        color: #ffd700;
+    }
+    
+    .header-main {
+        padding: 25px 0;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .church-emblem {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.2em;
+        color: #8b4513;
+        box-shadow: 0 4px 15px rgba(255,215,0,0.3);
+        border: 3px solid rgba(255,255,255,0.2);
+    }
+    
+    .church-info h1 {
+        font-size: 2.8em;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        margin-bottom: 5px;
+        letter-spacing: -1px;
+    }
+    
+    .church-subtitle {
+        font-size: 1.1em;
+        opacity: 0.9;
+        font-style: italic;
+        font-weight: 300;
+    }
+    
+    .header-contact {
+        text-align: right;
+        background: rgba(255,255,255,0.1);
+        padding: 20px 25px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .contact-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: 8px;
+        font-size: 0.95em;
+    }
+    
+    .contact-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .contact-icon {
+        margin-left: 8px;
+        font-size: 1.1em;
+    }
+    
+    .nav {
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(10px);
+        padding: 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-top: 1px solid rgba(139,69,19,0.2);
+    }
+    
+    .nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        flex-wrap: wrap;
+    }
+    
+    .nav a {
+        color: #654321;
+        text-decoration: none;
+        padding: 18px 30px;
+        display: block;
+        transition: all 0.3s;
+        font-weight: 600;
+        font-size: 1.05em;
+        border-bottom: 3px solid transparent;
+        position: relative;
+    }
+    
+    .nav a:hover {
+        background: linear-gradient(135deg, #8b4513, #654321);
+        color: white;
+        border-bottom-color: #ffd700;
+    }
+    
+    .hero {
+        background: linear-gradient(135deg, rgba(139,69,19,0.85) 0%, rgba(101,67,33,0.9) 100%), 
+                    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f5f5dc" width="1200" height="600"/><path fill="%23daa520" d="M600 50L750 200H450Z"/><rect fill="%238b4513" x="580" y="200" width="40" height="300"/><rect fill="%236b4423" x="570" y="480" width="60" height="20"/><circle fill="%23ffd700" cx="600" cy="125" r="15"/><path fill="%23cd853f" d="M580 200h40l-20 50z"/></svg>');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        height: 600px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        position: relative;
+    }
+    
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.2) 100%);
+    }
+    
+    .hero-content {
+        max-width: 800px;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 1.2s ease-out;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .hero-content h1 {
+        font-size: 4em;
+        margin-bottom: 25px;
+        text-shadow: 3px 3px 8px rgba(0,0,0,0.7);
+        font-weight: 300;
+        line-height: 1.1;
+    }
+    
+    .hero-content p {
+        font-size: 1.5em;
+        margin-bottom: 35px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        font-weight: 300;
+        line-height: 1.4;
+    }
+    
+    .cta-button {
+        display: inline-block;
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #654321;
+        padding: 18px 40px;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.2em;
+        transition: all 0.4s;
+        box-shadow: 0 6px 25px rgba(255,215,0,0.4);
+        border: 2px solid rgba(255,255,255,0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .cta-button:hover {
+        background: linear-gradient(135deg, #ffed4e, #ffd700);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 35px rgba(255,215,0,0.5);
+        color: #4a2c17;
+    }
+    
+    .main-content {
+        padding: 80px 0;
+        background: #fafafa;
+    }
+    
+    .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    
+    .section-title h2 {
+        font-size: 3em;
+        color: #654321;
+        margin-bottom: 20px;
+        font-weight: 300;
+        position: relative;
+    }
+    
+    .section-title h2::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(135deg, #ffd700, #cd853f);
+    }
+    
+    .section-title p {
+        font-size: 1.3em;
+        color: #7f8c8d;
+        max-width: 700px;
+        margin: 0 auto;
+        font-weight: 300;
+    }
+    
+    .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: 40px;
+        margin-bottom: 80px;
+    }
+    
+    .content-card {
+        background: white;
+        padding: 40px 35px;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        border-top: 5px solid #8b4513;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .content-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, transparent 0%, rgba(255,215,0,0.02) 100%);
+        pointer-events: none;
+    }
+    
+    .content-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+    
+    .card-icon {
+        font-size: 3em;
+        color: #cd853f;
+        margin-bottom: 20px;
+        text-align: center;
+        display: block;
+    }
+    
+    .content-card h3 {
+        color: #654321;
+        margin-bottom: 20px;
+        font-size: 1.8em;
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .content-card p {
+        margin-bottom: 15px;
+        color: #555;
+        line-height: 1.6;
+        font-size: 1.1em;
+    }
+    
+    .bible-verse {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 60px 50px;
+        text-align: center;
+        border-radius: 20px;
+        margin: 80px 0;
+        border: 1px solid rgba(205,133,63,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .bible-verse::before {
+        content: '"';
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 15em;
+        color: rgba(139,69,19,0.05);
+        font-family: serif;
+        font-weight: 700;
+    }
+    
+    .bible-verse blockquote {
+        font-size: 2em;
+        font-style: italic;
+        margin-bottom: 25px;
+        color: #654321;
+        position: relative;
+        z-index: 1;
+        font-weight: 300;
+        line-height: 1.3;
+    }
+    
+    .bible-verse cite {
+        font-weight: 600;
+        color: #8b4513;
+        font-size: 1.3em;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .schedule-section {
+        background: white;
+        padding: 60px 50px;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        margin: 80px 0;
+        border: 1px solid rgba(139,69,19,0.1);
+    }
+    
+    .schedule-section h3 {
+        color: #654321;
+        margin-bottom: 40px;
+        font-size: 2.5em;
+        text-align: center;
+        font-weight: 300;
+    }
+    
+    .schedule-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+    
+    .schedule-item {
+        padding: 30px 25px;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        border-radius: 15px;
+        border-left: 5px solid #cd853f;
+        transition: all 0.3s;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .schedule-item:hover {
+        background: linear-gradient(135deg, #8b4513, #654321);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(139,69,19,0.2);
+    }
+    
+    .schedule-item h4 {
+        color: #654321;
+        margin-bottom: 15px;
+        font-size: 1.5em;
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .schedule-item:hover h4 {
+        color: #ffd700;
+    }
+    
+    .schedule-time {
+        font-weight: 600;
+        color: #8b4513;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+    
+    .schedule-item:hover .schedule-time {
+        color: #ffed4e;
+    }
+    
+    .footer {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 60px 0 30px;
+        position: relative;
+    }
+    
+    .footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%232c3e50" width="100" height="100"/><circle fill="%2334495e" cx="25" cy="25" r="2" opacity="0.3"/><circle fill="%2334495e" cx="75" cy="35" r="1.5" opacity="0.3"/><circle fill="%2334495e" cx="50" cy="75" r="1" opacity="0.3"/></svg>') repeat;
+        opacity: 0.1;
+    }
+    
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .footer-section h4 {
+        margin-bottom: 20px;
+        color: #ffd700;
+        font-size: 1.4em;
+        font-weight: 600;
+    }
+    
+    .footer-section p, .footer-section a {
+        color: #bdc3c7;
+        text-decoration: none;
+        margin-bottom: 10px;
+        line-height: 1.6;
+    }
+    
+    .footer-section a:hover {
+        color: #ffd700;
+        transition: color 0.3s;
+    }
+    
+    .footer-bottom {
+        border-top: 1px solid #34495e;
+        padding-top: 30px;
+        text-align: center;
+        color: #95a5a6;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .back-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #654321;
+        padding: 12px 25px;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: 700;
+        transition: all 0.3s;
+        z-index: 1000;
+        box-shadow: 0 4px 15px rgba(255,215,0,0.3);
+        border: 2px solid rgba(255,255,255,0.2);
+        font-size: 0.9em;
+    }
+    
+    .back-btn:hover {
+        background: linear-gradient(135deg, #ffed4e, #ffd700);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255,215,0,0.4);
+    }
+    
+    .prayer-section {
+        background: linear-gradient(135deg, rgba(139,69,19,0.05), rgba(205,133,63,0.05));
+        padding: 60px 50px;
+        border-radius: 20px;
+        margin: 80px 0;
+        text-align: center;
+        border: 1px solid rgba(205,133,63,0.1);
+    }
+    
+    .prayer-section h3 {
+        color: #654321;
+        font-size: 2.2em;
+        margin-bottom: 30px;
+        font-weight: 300;
+    }
+    
+    .prayer-text {
+        font-size: 1.3em;
+        color: #7f8c8d;
+        font-style: italic;
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    /* ========== 반응형 디자인 - 전통 성당 모바일 최적화 ========== */
+    
+    /* 대형 태블릿 및 소형 데스크톱 */
+    @media (max-width: 1200px) {
+        .hero-content h1 {
+            font-size: 3.5em;
+        }
+        
+        .section-title h2 {
+            font-size: 2.8em;
+        }
+        
+        .content-grid {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+    }
+    
+    /* 태블릿 */
+    @media (max-width: 992px) {
+        .header-content {
+            flex-direction: column;
+            text-align: center;
+            gap: 25px;
+        }
+        
+        .header-contact {
+            text-align: center;
+        }
+        
+        .contact-item {
+            justify-content: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.2em;
+        }
+        
+        .content-grid {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+        
+        .schedule-grid {
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
+    }
+    
+    /* 태블릿 세로 및 큰 모바일 */
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 20px;
+        }
+        
+        /* 헤더 모바일 최적화 */
+        .top-bar {
+            display: none; /* 모바일에서는 상단바 숨김 */
+        }
+        
+        .header-main {
+            padding: 20px 0;
+        }
+        
+        .header-content {
+            text-align: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .logo {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .church-emblem {
+            width: 60px;
+            height: 60px;
+            font-size: 2em;
+        }
+        
+        .church-info h1 {
+            font-size: 2.2em;
+        }
+        
+        .church-subtitle {
+            font-size: 1em;
+        }
+        
+        .header-contact {
+            text-align: center;
+            margin-top: 15px;
+            padding: 15px 20px;
+        }
+        
+        .contact-item {
+            justify-content: center;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+        
+        /* 네비게이션 모바일 최적화 */
+        .nav ul {
+            flex-direction: column;
+            padding: 0;
+        }
+        
+        .nav a {
+            text-align: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 1em;
+        }
+        
+        .nav a:hover {
+            background: linear-gradient(135deg, #8b4513, #654321);
+            color: white;
+        }
+        
+        /* 히어로 섹션 모바일 최적화 */
+        .hero {
+            height: auto;
+            min-height: 80vh;
+            padding: 60px 20px;
+            background-attachment: scroll; /* 모바일에서 fixed 제거 */
+        }
+        
+        .hero-content {
+            padding: 0 10px;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.8em;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        
+        .hero-content p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        
+        .cta-button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+        }
+        
+        /* 메인 콘텐츠 모바일 최적화 */
+        .main-content {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            margin-bottom: 50px;
+            padding: 0 20px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2em;
+            line-height: 1.3;
+        }
+        
+        .section-title p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .content-grid {
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .content-card {
+            padding: 30px 25px;
+            margin: 0 10px;
+        }
+        
+        .card-icon {
+            font-size: 2.5em;
+        }
+        
+        .content-card h3 {
+            font-size: 1.6em;
+        }
+        
+        .content-card p {
+            font-size: 1em;
+        }
+        
+        /* 성경 구절 모바일 최적화 */
+        .bible-verse {
+            padding: 40px 30px;
+            margin: 60px 10px;
+            border-radius: 15px;
+        }
+        
+        .bible-verse::before {
+            font-size: 12em;
+            top: -25px;
+        }
+        
+        .bible-verse blockquote {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        
+        .bible-verse cite {
+            font-size: 1.1em;
+        }
+        
+        /* 기도 섹션 모바일 최적화 */
+        .prayer-section {
+            padding: 40px 30px;
+            margin: 60px 10px;
+            border-radius: 15px;
+        }
+        
+        .prayer-section h3 {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+        }
+        
+        .prayer-text {
+            font-size: 1.1em;
+        }
+        
+        /* 일정 섹션 모바일 최적화 */
+        .schedule-section {
+            padding: 40px 30px;
+            margin: 60px 10px;
+            border-radius: 15px;
+        }
+        
+        .schedule-section h3 {
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+        
+        .schedule-grid {
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        .schedule-item {
+            padding: 25px 20px;
+        }
+        
+        .schedule-item h4 {
+            font-size: 1.3em;
+        }
+        
+        .schedule-time {
+            font-size: 1em;
+        }
+        
+        /* 푸터 모바일 최적화 */
+        .footer {
+            padding: 50px 20px 25px;
+        }
+        
+        .footer-content {
+            grid-template-columns: 1fr;
+            gap: 35px;
+            margin-bottom: 35px;
+        }
+        
+        .footer-section {
+            text-align: center;
+        }
+        
+        .footer-section h4 {
+            font-size: 1.3em;
+        }
+        
+        .footer-bottom {
+            padding-top: 25px;
+            text-align: center;
+        }
+        
+        .back-btn {
+            top: 15px;
+            left: 15px;
+            padding: 10px 20px;
+            font-size: 0.85em;
+        }
+    }
+    
+    /* 모바일 */
+    @media (max-width: 480px) {
+        .container {
+            padding: 0 15px;
+        }
+        
+        .church-emblem {
+            width: 50px;
+            height: 50px;
+            font-size: 1.8em;
+        }
+        
+        .church-info h1 {
+            font-size: 2em;
+        }
+        
+        .church-subtitle {
+            font-size: 0.95em;
+        }
+        
+        .header-contact {
+            padding: 12px 15px;
+        }
+        
+        .contact-item {
+            font-size: 0.85em;
+        }
+        
+        .hero {
+            padding: 50px 15px;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.4em;
+        }
+        
+        .hero-content p {
+            font-size: 1.2em;
+        }
+        
+        .cta-button {
+            padding: 14px 25px;
+            font-size: 1em;
+        }
+        
+        .section-title h2 {
+            font-size: 2em;
+        }
+        
+        .section-title p {
+            font-size: 1em;
+        }
+        
+        .content-card {
+            padding: 25px 20px;
+            margin: 0 5px;
+        }
+        
+        .card-icon {
+            font-size: 2.2em;
+        }
+        
+        .content-card h3 {
+            font-size: 1.5em;
+        }
+        
+        .bible-verse {
+            padding: 30px 20px;
+            margin: 50px 5px;
+        }
+        
+        .bible-verse blockquote {
+            font-size: 1.4em;
+        }
+        
+        .prayer-section {
+            padding: 30px 20px;
+            margin: 50px 5px;
+        }
+        
+        .prayer-section h3 {
+            font-size: 1.6em;
+        }
+        
+        .prayer-text {
+            font-size: 1em;
+        }
+        
+        .schedule-section {
+            padding: 30px 20px;
+            margin: 50px 5px;
+        }
+        
+        .schedule-section h3 {
+            font-size: 1.8em;
+        }
+        
+        .schedule-item {
+            padding: 20px 15px;
+        }
+        
+        .schedule-item h4 {
+            font-size: 1.2em;
+        }
+        
+        .footer {
+            padding: 40px 15px 20px;
+        }
+        
+        .footer-content {
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h4 {
+            font-size: 1.2em;
+        }
+        
+        .footer-section p, .footer-section a {
+            font-size: 0.95em;
+        }
+    }
+    
+    /* 소형 모바일 */
+    @media (max-width: 320px) {
+        .container {
+            padding: 0 10px;
+        }
+        
+        .church-info h1 {
+            font-size: 1.8em;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.2em;
+        }
+        
+        .hero-content p {
+            font-size: 1.1em;
+        }
+        
+        .cta-button {
+            padding: 12px 20px;
+            font-size: 0.95em;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8em;
+        }
+        
+        .content-card {
+            padding: 20px 15px;
+        }
+        
+        .content-card h3 {
+            font-size: 1.4em;
+        }
+        
+        .bible-verse {
+            padding: 25px 15px;
+        }
+        
+        .bible-verse blockquote {
+            font-size: 1.3em;
+        }
+        
+        .prayer-section {
+            padding: 25px 15px;
+        }
+        
+        .schedule-section {
+            padding: 25px 15px;
+        }
+        
+        .schedule-item {
+            padding: 18px 12px;
+        }
+        
+        .back-btn {
+            padding: 8px 15px;
+            font-size: 0.8em;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if request.resolver_match.url_name != 'home' %}
+<a href="{% url 'templates_app:home' %}" class="back-btn">← 홈으로</a>
+{% endif %}
+
+<header class="header">
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div class="top-links">
+                    <a href="#about">수도회 소개</a>
+                    <a href="#spirituality">영성</a>
+                    <a href="#publications">출판</a>
+                    <a href="#community">공동체</a>
+                </div>
+                <div class="top-links">
+                    <a href="mailto:{{ email }}">📧 {{ email }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="header-main">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="church-emblem">✝</div>
+                    <div class="church-info">
+                        <h1>{{ church_name }}</h1>
+                        <div class="church-subtitle">{{ church_subtitle }}</div>
+                    </div>
+                </div>
+                <div class="header-contact">
+                    <div class="contact-item">
+                        {{ phone }} <span class="contact-icon">📞</span>
+                    </div>
+                    <div class="contact-item">
+                        {{ address }} <span class="contact-icon">📍</span>
+                    </div>
+                    <div class="contact-item">
+                        온라인 미사 중계 <span class="contact-icon">📺</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav class="nav">
+    <div class="container">
+        <ul>
+            <li><a href="#home">홈</a></li>
+            <li><a href="#about">성당 소개</a></li>
+            <li><a href="#mass">미사 및 전례</a></li>
+            <li><a href="#spirituality">영성 생활</a></li>
+            <li><a href="#programs">교육 프로그램</a></li>
+            <li><a href="#community">신앙 공동체</a></li>
+            <li><a href="#contact">연락처</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1>그리스도의 평화가 함께하소서</h1>
+        <p>하느님의 말씀과 사랑으로 하나 되어 세상에 복음의 기쁜 소식을 전하는 거룩한 공동체입니다.</p>
+        <a href="#mass" class="cta-button">미사 시간 안내</a>
+    </div>
+</section>
+
+<main class="main-content">
+    <div class="container">
+        <div class="section-title">
+            <h2>우리의 사명과 정신</h2>
+            <p>복음 선포와 영혼 구원을 위해 하느님께 봉헌된 거룩한 공동체로서 모든 이들에게 그리스도의 사랑을 전합니다.</p>
+        </div>
+        
+        <div class="content-grid">
+            <div class="content-card">
+                <span class="card-icon">📖</span>
+                <h3>말씀 중심의 신앙</h3>
+                <p>하느님의 말씀을 깊이 묵상하고 실천하며, 성경을 통해 주님과의 친밀한 관계를 형성합니다.</p>
+                <p>매일의 전례와 성무일도를 통해 끊임없이 하느님과 대화하며 영적 성장을 추구합니다.</p>
+            </div>
+            
+            <div class="content-card">
+                <span class="card-icon">🕊️</span>
+                <h3>전례와 성사 생활</h3>
+                <p>거룩한 미사와 성사를 통해 그리스도와 하나 되며, 전례력에 따른 신앙 생활을 충실히 살아갑니다.</p>
+                <p>고해성사, 성체성사 등을 통해 영혼의 정화와 은총의 삶을 추구합니다.</p>
+            </div>
+            
+            <div class="content-card">
+                <span class="card-icon">🤝</span>
+                <h3>사랑의 실천</h3>
+                <p>이웃 사랑을 구체적으로 실천하며, 특히 가난하고 소외된 이들을 우선적으로 섬깁니다.</p>
+                <p>지역사회와 함께하는 다양한 봉사 활동을 통해 그리스도의 사랑을 증거합니다.</p>
+            </div>
+            
+            <div class="content-card">
+                <span class="card-icon">📚</span>
+                <h3>교육과 전승</h3>
+                <p>신앙 교육과 영성 지도를 통해 각자의 소명을 발견하고 성덕의 길을 걸어갑니다.</p>
+                <p>가톨릭 전통과 교회의 가르침을 충실히 전수하며 미래 세대의 신앙을 키웁니다.</p>
+            </div>
+        </div>
+        
+        <div class="bible-verse">
+            <blockquote>"너희는 온 세상에 가서 모든 피조물에게 복음을 선포하여라."</blockquote>
+            <cite>마르코 복음 16장 15절</cite>
+        </div>
+        
+        <div class="prayer-section">
+            <h3>오늘의 기도</h3>
+            <p class="prayer-text">
+                "주님, 저희가 당신의 말씀을 듣고 따르며, 형제자매들과 함께 당신 나라를 건설하는 
+                기쁨과 평화의 사도가 되게 하소서. 아멘."
+            </p>
+        </div>
+        
+        <div class="schedule-section" id="mass">
+            <h3>⛪ 미사 및 전례 시간</h3>
+            <div class="schedule-grid">
+                <div class="schedule-item">
+                    <h4>주일 미사</h4>
+                    <div class="schedule-time">토요일 오후 7:00 (주일미사)</div>
+                    {% for time in mass_times.sunday %}
+                        <p>{{ time }}</p>
+                    {% endfor %}
+                </div>
+                
+                <div class="schedule-item">
+                    <h4>평일 미사</h4>
+                    {% for time in mass_times.weekday %}
+                        <div class="schedule-time">{{ time }}</div>
+                    {% endfor %}
+                    <p>라틴어 미사: 매월 첫째 주 일요일</p>
+                </div>
+                
+                <div class="schedule-item">
+                    <h4>고해성사</h4>
+                    {% for time in mass_times.confession %}
+                        <div class="schedule-time">{{ time }}</div>
+                    {% endfor %}
+                    <p>개별 상담 가능 (사전 연락)</p>
+                </div>
+                
+                <div class="schedule-item">
+                    <h4>기도와 묵상</h4>
+                    {% for time in mass_times.special %}
+                        <div class="schedule-time">{{ time }}</div>
+                    {% endfor %}
+                    <p>렉시오 디비나: 매주 수요일 오후 2시</p>
+                </div>
+                
+                <div class="schedule-item">
+                    <h4>혼인성사</h4>
+                    <div class="schedule-time">매월 둘째, 넷째 토요일</div>
+                    <p>혼인 준비 교육 필수</p>
+                    <p>3개월 전 예약 필요</p>
+                </div>
+                
+                <div class="schedule-item">
+                    <h4>세례성사</h4>
+                    <div class="schedule-time">매월 첫째 주 일요일</div>
+                    <p>예비신자 교리 6개월 과정</p>
+                    <p>대부모 동반 필수</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>연락처</h4>
+                <p>📍 {{ address }}</p>
+                <p>📞 {{ phone }}</p>
+                <p>📧 {{ email }}</p>
+                <p>🌐 온라인 미사 중계 안내</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>미사 시간</h4>
+                <p><strong>주일:</strong> 오전 7:00, 9:00, 11:00, 오후 6:00</p>
+                <p><strong>평일:</strong> 오전 6:30, 오후 7:00</p>
+                <p><strong>토요일:</strong> 오전 6:30, 오후 7:00</p>
+                <p><strong>고해성사:</strong> 미사 30분 전, 토요일 오후 5:00-6:30</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>신앙 생활</h4>
+                <p><a href="#">성경 묵상</a></p>
+                <p><a href="#">전례력 안내</a></p>
+                <p><a href="#">성인 전기</a></p>
+                <p><a href="#">교회 문헌</a></p>
+                <p><a href="#">영성 서적</a></p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>교구청 및 관련 기관</h4>
+                <p><a href="#">천주교 서울대교구</a></p>
+                <p><a href="#">바티칸 뉴스</a></p>
+                <p><a href="#">가톨릭평화신문</a></p>
+                <p><a href="#">한국천주교주교회의</a></p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 {{ church_name }}. Ad Majorem Dei Gloriam - 하느님의 더 큰 영광을 위하여</p>
+            <p style="margin-top: 10px; font-style: italic; color: #7f8c8d;">
+                "그들이 모두 하나가 되어 아버지께서 내 안에, 내가 아버지 안에 있는 것처럼 그들도 우리 안에 있게 하소서." (요한 17,21)
+            </p>
+        </div>
+    </div>
+</footer>
+{% endblock %}

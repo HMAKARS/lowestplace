@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>{% block title %}{% endblock %} | Church Builder</title>
+    
+    <!-- Base CSS - 모바일 최적화 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* 터치 친화적 버튼 크기 */
+        button, .btn, a[role="button"] {
+            min-height: 44px;
+            min-width: 44px;
+        }
+        
+        /* 스크롤 성능 최적화 */
+        * {
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* 포커스 가시성 개선 */
+        :focus {
+            outline: 2px solid #007bff;
+            outline-offset: 2px;
+        }
+        
+        /* 모바일에서 호버 효과 비활성화 */
+        @media (hover: none) and (pointer: coarse) {
+            *:hover {
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
+        
+        /* 모바일 기본 스타일 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            body {
+                font-size: 16px; /* iOS 줌 방지 */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
