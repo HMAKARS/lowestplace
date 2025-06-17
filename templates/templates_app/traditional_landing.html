@@ -5,612 +5,1388 @@
 
 {% block extra_css %}
 <style>
-    body {
-        font-family: 'Noto Serif KR', 'Georgia', serif;
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+    * {
         margin: 0;
         padding: 0;
-        background: linear-gradient(135deg, #8b4513 0%, #654321 50%, #4a2c17 100%);
-        color: #2c3e50;
-        overflow-x: hidden;
-        position: relative;
-        height: 100vh;
-        overflow-y: hidden; /* 웹에서는 스크롤 숨김 */
+        box-sizing: border-box;
     }
-    
-    /* 배경 패턴 */
-    body::before {
+
+    body {
+        font-family: 'Libre Baskerville', serif;
+        line-height: 1.8;
+        color: #2c1810;
+        background: #fdfcf7;
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 30px;
+    }
+
+    /* 홈 버튼 */
+    .back-btn {
+        position: fixed;
+        top: 30px;
+        left: 30px;
+        background: linear-gradient(135deg, #8b6914, #d4af37);
+        color: #fdfcf7;
+        padding: 12px 25px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        z-index: 1001;
+        box-shadow: 0 10px 25px rgba(139, 105, 20, 0.3);
+        border: 2px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .back-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(139, 105, 20, 0.4);
+        color: #fdfcf7;
+        text-decoration: none;
+        border-color: #d4af37;
+    }
+
+    /* 장식적 요소들 */
+    .ornament {
+        font-family: 'Cinzel', serif;
+        color: #8b6914;
+        text-align: center;
+        font-size: 1.5rem;
+        margin: 20px 0;
+    }
+
+    .ornament::before,
+    .ornament::after {
+        content: '❦';
+        margin: 0 15px;
+        font-size: 1.2rem;
+    }
+
+    .divider {
+        text-align: center;
+        margin: 50px 0;
+        color: #8b6914;
+    }
+
+    .divider::before {
         content: '';
+        display: inline-block;
+        width: 100px;
+        height: 1px;
+        background: linear-gradient(to right, transparent, #8b6914, transparent);
+        vertical-align: middle;
+        margin-right: 20px;
+    }
+
+    .divider::after {
+        content: '';
+        display: inline-block;
+        width: 100px;
+        height: 1px;
+        background: linear-gradient(to right, transparent, #8b6914, transparent);
+        vertical-align: middle;
+        margin-left: 20px;
+    }
+
+    /* 네비게이션 */
+    .navbar {
+        background: rgba(253, 252, 247, 0.95);
+        box-shadow: 0 2px 10px rgba(44, 24, 16, 0.1);
+        border-bottom: 3px solid #8b6914;
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%238b4513" width="100" height="100"/><circle fill="%23a0522d" cx="20" cy="20" r="3" opacity="0.1"/><circle fill="%23a0522d" cx="80" cy="30" r="2" opacity="0.1"/><circle fill="%23a0522d" cx="50" cy="70" r="2.5" opacity="0.1"/><circle fill="%23a0522d" cx="90" cy="80" r="2" opacity="0.1"/><path fill="%23cd853f" d="M45 10l10 10-10 10-10-10z" opacity="0.05"/><path fill="%23cd853f" d="M25 45l10 10-10 10-10-10z" opacity="0.05"/><path fill="%23cd853f" d="M75 65l10 10-10 10-10-10z" opacity="0.05"/></svg>') repeat;
-        opacity: 0.3;
-        z-index: -1;
+        z-index: 1000;
+        padding: 20px 0;
+        backdrop-filter: blur(10px);
     }
-    
-    .landing-container {
-        height: 100vh;
+
+    .nav-content {
         display: flex;
-        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        font-family: 'Cinzel', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #8b6914;
+        text-decoration: none;
+        text-shadow: 1px 1px 2px rgba(139, 105, 20, 0.3);
         position: relative;
-        overflow: hidden;
     }
-    
-    /* 상단 성경 구절 */
-    .scripture-bar {
-        background: rgba(0, 0, 0, 0.3);
-        color: rgba(255, 255, 255, 0.9);
-        padding: 8px 0;
-        text-align: center;
-        font-style: italic;
-        font-size: 0.85em;
-        border-bottom: 1px solid rgba(255, 215, 0, 0.3);
-        flex-shrink: 0;
+
+    .logo::before {
+        content: '✠';
+        margin-right: 10px;
+        font-size: 1.5rem;
     }
-    
-    .scripture-text {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 0 20px;
+
+    .nav-links {
+        display: flex;
+        gap: 40px;
+        list-style: none;
     }
-    
-    /* 메인 콘텐츠 */
-    .main-content {
-        flex: 1;
+
+    .nav-links a {
+        color: #2c1810;
+        text-decoration: none;
+        font-weight: 400;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        padding: 5px 15px;
+        border-radius: 20px;
+    }
+
+    .nav-links a::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(139, 105, 20, 0.1), rgba(139, 105, 20, 0.05));
+        border-radius: 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .nav-links a:hover::before {
+        opacity: 1;
+    }
+
+    .nav-links a:hover {
+        color: #8b6914;
+        transform: translateY(-1px);
+    }
+
+    /* 히어로 섹션 */
+    .hero {
+        min-height: 100vh;
+        background: linear-gradient(
+            rgba(253, 252, 247, 0.9),
+            rgba(253, 252, 247, 0.8)
+        ), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="paper" patternUnits="userSpaceOnUse" width="100" height="100"><rect width="100" height="100" fill="%23fdfcf7"/><circle cx="20" cy="20" r="1" fill="%23f5f3ea" opacity="0.3"/><circle cx="80" cy="60" r="1" fill="%23f5f3ea" opacity="0.3"/><circle cx="50" cy="90" r="1" fill="%23f5f3ea" opacity="0.3"/></pattern></defs><rect width="1200" height="800" fill="url(%23paper)"/></svg>');
+        background-size: cover;
+        background-attachment: fixed;
         display: flex;
         align-items: center;
-        justify-content: center;
-        padding: 20px 20px;
+        text-align: center;
+        padding: 150px 0 80px;
         position: relative;
-        overflow-y: auto;
     }
-    
-    .content-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(20px);
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(ellipse at center, transparent 20%, rgba(253, 252, 247, 0.3) 80%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
         max-width: 900px;
-        width: 100%;
-        overflow: hidden;
-        border: 2px solid rgba(255, 215, 0, 0.3);
+        margin: 0 auto;
+    }
+
+    .hero-cross {
+        font-size: 4rem;
+        color: #8b6914;
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 4px rgba(139, 105, 20, 0.3);
+        animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+        from { text-shadow: 2px 2px 4px rgba(139, 105, 20, 0.3); }
+        to { text-shadow: 2px 2px 20px rgba(139, 105, 20, 0.6); }
+    }
+
+    .hero-title {
+        font-family: 'Cinzel', serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: #2c1810;
+        margin-bottom: 30px;
+        line-height: 1.2;
+        text-shadow: 1px 1px 3px rgba(44, 24, 16, 0.2);
+    }
+
+    .hero-subtitle {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.8rem;
+        color: #5d4e37;
+        margin-bottom: 20px;
+        font-style: italic;
+        opacity: 0.9;
+    }
+
+    .verse-container {
+        background: rgba(255, 255, 255, 0.7);
+        border: 2px solid #8b6914;
+        border-radius: 15px;
+        padding: 40px;
+        margin: 40px 0;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(139, 105, 20, 0.1);
+        backdrop-filter: blur(5px);
+    }
+
+    .verse-container::before {
+        content: '"';
+        position: absolute;
+        top: -20px;
+        left: 30px;
+        font-size: 4rem;
+        color: #8b6914;
+        font-family: 'Cinzel', serif;
+        background: #fdfcf7;
+        padding: 0 10px;
+    }
+
+    .verse-text {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.6rem;
+        font-style: italic;
+        color: #2c1810;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .verse-reference {
+        font-size: 1.1rem;
+        color: #8b6914;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .church-description {
+        font-size: 1.2rem;
+        color: #5d4e37;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto 0;
+    }
+
+    /* 예배 시간 섹션 */
+    .worship-times {
+        padding: 100px 0;
+        background: #fdfcf7;
         position: relative;
     }
-    
-    .content-card::before {
+
+    .worship-times::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, rgba(139, 105, 20, 0.05), transparent);
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+
+    .section-title {
+        font-family: 'Cinzel', serif;
+        font-size: 3rem;
+        font-weight: 600;
+        color: #2c1810;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #8b6914, transparent);
+    }
+
+    .section-subtitle {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.4rem;
+        color: #5d4e37;
+        font-style: italic;
+        margin-bottom: 20px;
+    }
+
+    .worship-schedule {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 40px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .worship-item {
+        background: rgba(255, 255, 255, 0.8);
+        border: 2px solid #d4af37;
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-align: center;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(139, 105, 20, 0.1);
+    }
+
+    .worship-item::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         height: 5px;
-        background: linear-gradient(90deg, #ffd700, #cd853f, #ffd700);
+        background: linear-gradient(90deg, #8b6914, #d4af37, #8b6914);
     }
-    
-    /* 헤더 섹션 */
-    .card-header {
-        text-align: center;
-        padding: 35px 30px 20px;
-        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(205, 133, 63, 0.1));
-        border-bottom: 1px solid rgba(139, 69, 19, 0.1);
+
+    .worship-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(139, 105, 20, 0.2);
+        background: rgba(255, 255, 255, 0.95);
     }
-    
-    .church-emblem {
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(135deg, #ffd700, #cd853f);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 20px;
-        font-size: 2.5em;
-        color: #654321;
-        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
-        border: 3px solid rgba(255, 255, 255, 0.5);
-        animation: glow 3s ease-in-out infinite;
+
+    .worship-icon {
+        font-size: 3rem;
+        color: #8b6914;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 3px rgba(139, 105, 20, 0.3);
     }
-    
-    @keyframes glow {
-        0%, 100% { box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4); }
-        50% { box-shadow: 0 8px 35px rgba(255, 215, 0, 0.6); }
+
+    .worship-name {
+        font-family: 'Cinzel', serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c1810;
+        margin-bottom: 15px;
     }
-    
-    .church-name {
-        font-size: 3em;
-        font-weight: 700;
-        color: #654321;
-        margin-bottom: 12px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        line-height: 1.1;
+
+    .worship-time {
+        font-size: 1.3rem;
+        color: #8b6914;
+        font-weight: 600;
+        margin-bottom: 15px;
     }
-    
-    .church-slogan {
-        font-size: 1.2em;
-        color: #8b4513;
-        margin-bottom: 8px;
-        font-style: italic;
-        font-weight: 400;
+
+    .worship-description {
+        color: #5d4e37;
+        line-height: 1.6;
+        font-size: 1rem;
     }
-    
-    .church-subtitle {
-        font-size: 1em;
-        color: #666;
-        font-weight: 300;
-    }
-    
-    /* 정보 그리드 */
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 0;
-        margin: 20px 0;
-    }
-    
-    .info-item {
-        padding: 20px 18px;
-        text-align: center;
-        border-right: 1px solid rgba(139, 69, 19, 0.1);
-        border-bottom: 1px solid rgba(139, 69, 19, 0.1);
-        transition: all 0.3s;
+
+    /* 성사 섹션 */
+    .sacraments {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #f9f7f0 0%, #fdfcf7 100%);
         position: relative;
     }
-    
-    .info-item:hover {
-        background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(205, 133, 63, 0.05));
-        transform: translateY(-2px);
+
+    .sacraments::before {
+        content: '';
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(139, 105, 20, 0.03) 0%, transparent 70%);
+        border-radius: 50%;
     }
-    
-    .info-item:last-child {
-        border-right: none;
+
+    .sacraments::after {
+        content: '';
+        position: absolute;
+        bottom: 50px;
+        right: 50px;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(139, 105, 20, 0.02) 0%, transparent 70%);
+        border-radius: 50%;
     }
-    
-    .info-icon {
-        font-size: 2.2em;
-        color: #cd853f;
-        margin-bottom: 12px;
-        display: block;
+
+    .sacraments-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        position: relative;
+        z-index: 1;
     }
-    
-    .info-title {
-        font-size: 1.2em;
-        font-weight: 600;
-        color: #654321;
-        margin-bottom: 8px;
+
+    .sacrament-card {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #d4af37;
+        border-radius: 15px;
+        padding: 35px 25px;
+        transition: all 0.3s ease;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(139, 105, 20, 0.08);
     }
-    
-    .info-text {
-        font-size: 1em;
-        color: #666;
-        line-height: 1.4;
+
+    .sacrament-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(139, 105, 20, 0.02), rgba(212, 175, 55, 0.02));
+        border-radius: 15px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
-    
-    .info-highlight {
-        color: #8b4513;
-        font-weight: 600;
+
+    .sacrament-card:hover::before {
+        opacity: 1;
     }
-    
-    /* 액션 섹션 */
-    .action-section {
-        padding: 25px 30px;
-        background: linear-gradient(135deg, rgba(139, 69, 19, 0.05), rgba(101, 67, 33, 0.05));
+
+    .sacrament-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(139, 105, 20, 0.15);
+        border-color: #8b6914;
+    }
+
+    .sacrament-symbol {
+        font-size: 2.5rem;
+        color: #8b6914;
+        margin-bottom: 20px;
         text-align: center;
-        border-top: 1px solid rgba(139, 69, 19, 0.1);
+        position: relative;
+        z-index: 1;
     }
-    
-    .action-title {
-        font-size: 1.3em;
-        color: #654321;
-        margin-bottom: 20px;
+
+    .sacrament-title {
+        font-family: 'Cinzel', serif;
+        font-size: 1.3rem;
         font-weight: 600;
+        color: #2c1810;
+        margin-bottom: 15px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
     }
-    
-    .action-buttons {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
+
+    .sacrament-description {
+        color: #5d4e37;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
     }
-    
-    .action-btn {
-        padding: 15px 30px;
-        border-radius: 8px;
+
+    .sacrament-schedule {
+        background: rgba(139, 105, 20, 0.1);
+        padding: 10px 15px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #8b6914;
         font-weight: 600;
-        text-decoration: none;
-        transition: all 0.3s;
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 1em;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(139, 105, 20, 0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    /* 목회진 섹션 */
+    .clergy {
+        padding: 100px 0;
+        background: #fdfcf7;
+    }
+
+    .clergy-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 50px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .clergy-card {
+        text-align: center;
+        padding: 40px 30px;
+        background: rgba(255, 255, 255, 0.6);
+        border: 2px solid #d4af37;
+        border-radius: 25px;
+        transition: all 0.4s ease;
         position: relative;
         overflow: hidden;
     }
-    
-    .action-btn::before {
+
+    .clergy-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(from 0deg, transparent, rgba(139, 105, 20, 0.05), transparent);
+        animation: rotate 20s linear infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .clergy-card:hover::before {
+        opacity: 1;
+    }
+
+    @keyframes rotate {
+        to { transform: rotate(360deg); }
+    }
+
+    .clergy-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 20px 50px rgba(139, 105, 20, 0.2);
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .clergy-portrait {
+        width: 150px;
+        height: 200px;
+        background: linear-gradient(135deg, #8b6914, #d4af37);
+        border-radius: 15px;
+        margin: 0 auto 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        color: #fdfcf7;
+        box-shadow: 0 10px 25px rgba(139, 105, 20, 0.3);
+        position: relative;
+        z-index: 1;
+        border: 3px solid #fdfcf7;
+    }
+
+    .clergy-name {
+        font-family: 'Cinzel', serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #2c1810;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .clergy-position {
+        color: #8b6914;
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .clergy-bio {
+        color: #5d4e37;
+        line-height: 1.6;
+        font-size: 0.95rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* 교회 역사 섹션 */
+    .history {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #2c1810 0%, #3d2817 100%);
+        color: #fdfcf7;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .history::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="cross" patternUnits="userSpaceOnUse" width="100" height="100"><rect width="100" height="100" fill="none"/><path d="M50 20 L50 80 M20 50 L80 50" stroke="%23d4af37" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23cross)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .history .section-title {
+        color: #d4af37;
+    }
+
+    .history .section-subtitle {
+        color: rgba(253, 252, 247, 0.8);
+    }
+
+    .timeline {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        padding: 50px 0;
+        z-index: 1;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(to bottom, #8b6914, #d4af37, #8b6914);
+        transform: translateX(-50%);
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 60px;
+        display: flex;
+        align-items: center;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content {
+        margin-right: 60px;
+        text-align: right;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content {
+        margin-left: 60px;
+    }
+
+    .timeline-marker {
+        position: absolute;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        background: #d4af37;
+        border: 4px solid #2c1810;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+    }
+
+    .timeline-content {
+        background: rgba(212, 175, 55, 0.1);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 15px;
+        padding: 25px;
+        flex: 1;
+        backdrop-filter: blur(5px);
+    }
+
+    .timeline-year {
+        font-family: 'Cinzel', serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #d4af37;
+        margin-bottom: 10px;
+    }
+
+    .timeline-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #fdfcf7;
+    }
+
+    .timeline-description {
+        color: rgba(253, 252, 247, 0.8);
+        line-height: 1.6;
+    }
+
+    /* CTA 섹션 */
+    .cta {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #f9f7f0 0%, #fdfcf7 100%);
+        text-align: center;
+        position: relative;
+    }
+
+    .cta::before {
+        content: '✠';
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 8rem;
+        color: rgba(139, 105, 20, 0.05);
+        z-index: 0;
+    }
+
+    .cta-content {
+        max-width: 700px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-title {
+        font-family: 'Cinzel', serif;
+        font-size: 2.8rem;
+        font-weight: 600;
+        color: #2c1810;
+        margin-bottom: 25px;
+    }
+
+    .cta-subtitle {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.4rem;
+        color: #5d4e37;
+        margin-bottom: 40px;
+        font-style: italic;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 25px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 18px 40px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.4s ease;
+        display: inline-block;
+        cursor: pointer;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: all 0.5s ease;
+        transform: translate(-50%, -50%);
+    }
+
+    .btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #8b6914, #d4af37);
+        color: #fdfcf7;
+        box-shadow: 0 8px 25px rgba(139, 105, 20, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(139, 105, 20, 0.4);
+        color: #fdfcf7;
+        text-decoration: none;
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: #8b6914;
+        border-color: #8b6914;
+    }
+
+    .btn-outline:hover {
+        background: #8b6914;
+        color: #fdfcf7;
+        text-decoration: none;
+    }
+
+    /* 연락처 섹션 */
+    .contact {
+        padding: 80px 0;
+        background: #fdfcf7;
+        border-top: 3px solid #8b6914;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+    }
+
+    .contact-item {
+        text-align: center;
+        padding: 40px 25px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid #d4af37;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-item::before {
         content: '';
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.5s;
+        background: linear-gradient(90deg, transparent, rgba(139, 105, 20, 0.05), transparent);
+        transition: left 0.5s ease;
     }
-    
-    .action-btn:hover::before {
+
+    .contact-item:hover::before {
         left: 100%;
     }
-    
-    .btn-primary {
-        background: linear-gradient(135deg, #8b4513, #654321);
-        color: white;
-        border: 2px solid #8b4513;
+
+    .contact-item:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(139, 105, 20, 0.15);
+        background: rgba(255, 255, 255, 0.9);
     }
-    
-    .btn-primary:hover {
-        background: linear-gradient(135deg, #654321, #8b4513);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(139, 69, 19, 0.3);
+
+    .contact-icon {
+        font-size: 2.5rem;
+        color: #8b6914;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 3px rgba(139, 105, 20, 0.3);
     }
-    
-    .btn-secondary {
-        background: rgba(255, 215, 0, 0.1);
-        color: #654321;
-        border: 2px solid #cd853f;
-        backdrop-filter: blur(10px);
-    }
-    
-    .btn-secondary:hover {
-        background: rgba(255, 215, 0, 0.2);
-        border-color: #8b4513;
-        transform: translateY(-2px);
-    }
-    
-    /* 하단 정보 */
-    .footer-info {
-        background: rgba(0, 0, 0, 0.4);
-        color: rgba(255, 255, 255, 0.9);
-        padding: 18px 25px;
-        text-align: center;
-        backdrop-filter: blur(10px);
-        flex-shrink: 0;
-    }
-    
-    .parish-info {
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-        flex-wrap: wrap;
+
+    .contact-item h4 {
+        font-family: 'Cinzel', serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #2c1810;
         margin-bottom: 15px;
     }
-    
-    .parish-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.95em;
+
+    .contact-item p {
+        color: #5d4e37;
+        margin-bottom: 8px;
+        line-height: 1.5;
     }
-    
-    .parish-highlight {
-        color: #ffd700;
-        font-weight: 600;
-    }
-    
-    .blessing {
-        font-style: italic;
-        font-size: 0.9em;
-        opacity: 0.8;
-        margin-top: 10px;
-    }
-    
-    /* 뒤로가기 버튼 */
-    .back-btn {
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        background: rgba(255, 215, 0, 0.9);
-        color: #654321;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 25px;
-        font-weight: 600;
-        transition: all 0.3s;
-        z-index: 1000;
-        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-        backdrop-filter: blur(10px);
-        border: 2px solid rgba(255, 255, 255, 0.3);
-    }
-    
-    .back-btn:hover {
-        background: #ffd700;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
-    }
-    
+
     /* 반응형 디자인 */
     @media (max-width: 768px) {
-        /* 모바일에서는 스크롤 허용 */
-        body {
-            height: auto;
-            min-height: 100vh;
-            overflow-y: auto;
+        .nav-links {
+            display: none;
         }
-        
-        .landing-container {
-            height: auto;
-            min-height: 100vh;
-            overflow: visible;
+
+        .hero-title {
+            font-size: 2.5rem;
         }
-        
-        .main-content {
-            overflow-y: visible;
+
+        .section-title {
+            font-size: 2.2rem;
         }
-        
-        .main-content {
-            padding: 15px 15px;
-        }
-        
-        .content-card {
-            margin: 0 10px;
-        }
-        
-        .card-header {
-            padding: 25px 20px 18px;
-        }
-        
-        .church-emblem {
-            width: 70px;
-            height: 70px;
-            font-size: 2.2em;
-            margin-bottom: 15px;
-        }
-        
-        .church-name {
-            font-size: 2.4em;
-            margin-bottom: 10px;
-        }
-        
-        .church-slogan {
-            font-size: 1.1em;
-        }
-        
-        .church-subtitle {
-            font-size: 0.95em;
-        }
-        
-        .info-grid {
+
+        .worship-schedule {
             grid-template-columns: 1fr;
-            margin: 18px 0;
         }
-        
-        .info-item {
-            padding: 18px 15px;
-            border-right: none;
+
+        .clergy-grid {
+            grid-template-columns: 1fr;
         }
-        
-        .info-icon {
-            font-size: 2em;
-            margin-bottom: 10px;
+
+        .timeline::before {
+            left: 20px;
         }
-        
-        .action-section {
-            padding: 20px 20px;
+
+        .timeline-item {
+            padding-left: 50px;
         }
-        
-        .action-buttons {
+
+        .timeline-item .timeline-content {
+            margin-left: 0;
+            margin-right: 0;
+            text-align: left;
+        }
+
+        .timeline-marker {
+            left: 20px;
+        }
+
+        .cta-buttons {
             flex-direction: column;
             align-items: center;
-            gap: 12px;
         }
-        
-        .action-btn {
-            width: 100%;
-            max-width: 280px;
-            justify-content: center;
-            padding: 12px 20px;
+
+        .container {
+            padding: 0 20px;
         }
-        
-        .footer-info {
-            padding: 15px 20px;
-        }
-        
-        .parish-info {
-            flex-direction: column;
-            gap: 12px;
-        }
-        
-        .back-btn {
-            top: 15px;
-            left: 15px;
-            padding: 8px 16px;
-            font-size: 0.9em;
-        }
-        
-        .scripture-bar {
-            padding: 6px 0;
-            font-size: 0.8em;
+
+        .verse-container {
+            padding: 25px;
         }
     }
-    
-    @media (max-width: 480px) {
-        .church-name {
-            font-size: 2.1em;
-        }
-        
-        .church-slogan {
-            font-size: 1em;
-        }
-        
-        .card-header {
-            padding: 22px 18px 15px;
-        }
-        
-        .church-emblem {
-            width: 60px;
-            height: 60px;
-            font-size: 2em;
-        }
-        
-        .info-item {
-            padding: 15px 12px;
-        }
-        
-        .action-section {
-            padding: 18px 18px;
-        }
-        
-        .action-btn {
-            max-width: 260px;
-            padding: 11px 18px;
-            font-size: 0.95em;
-        }
-        
-        .footer-info {
-            padding: 12px 18px;
-        }
+
+    /* 스크롤 애니메이션 */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease;
     }
-    
-    @media (max-width: 320px) {
-        .main-content {
-            padding: 12px 8px;
-        }
-        
-        .content-card {
-            margin: 0 5px;
-        }
-        
-        .church-name {
-            font-size: 1.9em;
-        }
-        
-        .card-header {
-            padding: 20px 12px 12px;
-        }
-        
-        .info-item {
-            padding: 12px 8px;
-        }
-        
-        .action-section {
-            padding: 15px 12px;
-        }
-        
-        .action-btn {
-            width: 100%;
-            padding: 10px 15px;
-            font-size: 0.9em;
-        }
+
+    .scroll-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* 커스텀 스크롤바 */
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f9f7f0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, #8b6914, #d4af37);
+        border-radius: 6px;
+        border: 2px solid #f9f7f0;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(to bottom, #d4af37, #8b6914);
     }
 </style>
 {% endblock %}
 
 {% block content %}
+<!-- 홈 버튼 -->
 {% if request.resolver_match.url_name != 'home' %}
 <a href="{% url 'templates_app:home' %}" class="back-btn">← 홈으로</a>
 {% endif %}
 
-<div class="landing-container">
-    <!-- 상단 성경 구절 -->
-    <div class="scripture-bar">
-        <div class="scripture-text">
-            "내가 너희에게 평화를 남기고 간다. 내 평화를 너희에게 준다." - 요한 14,27
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="container">
+        <div class="nav-content">
+            <a href="#" class="logo">{{ church_name }}</a>
+            <ul class="nav-links">
+                <li><a href="#worship">예배</a></li>
+                <li><a href="#sacraments">성사</a></li>
+                <li><a href="#clergy">성직자</a></li>
+                <li><a href="#history">역사</a></li>
+                <li><a href="#contact">연락처</a></li>
+            </ul>
         </div>
     </div>
-    
-    <!-- 메인 콘텐츠 -->
-    <div class="main-content">
-        <div class="content-card">
-            <!-- 헤더 -->
-            <div class="card-header">
-                <div class="church-emblem">✝</div>
-                <h1 class="church-name">{{ church_name }}</h1>
-                <p class="church-slogan">{{ church_slogan }}</p>
-                <p class="church-subtitle">{{ church_subtitle }}</p>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-cross scroll-animate">✠</div>
+            <h1 class="hero-title scroll-animate">{{ church_name }}</h1>
+            <p class="hero-subtitle scroll-animate">{{ church_slogan }}</p>
+            
+            <div class="verse-container scroll-animate">
+                <p class="verse-text">
+                    "Pax vobiscum"<br>
+                    평화가 여러분과 함께하시기를
+                </p>
+                <p class="verse-reference">- 가톨릭 전례 인사 -</p>
+            </div>
+
+            <p class="church-description scroll-animate">
+                {{ church_subtitle }}
+            </p>
+
+            <div class="ornament scroll-animate">Deo Gratias</div>
+        </div>
+    </div>
+</section>
+
+<!-- Worship Times -->
+<section class="worship-times" id="worship">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <h2 class="section-title">미사 안내</h2>
+            <div class="ornament">⟡</div>
+            <p class="section-subtitle">하나님께 드리는 거룩한 예배</p>
+        </div>
+        
+        <div class="worship-schedule">
+            <div class="worship-item scroll-animate">
+                <div class="worship-icon">⛪</div>
+                <h3 class="worship-name">주일 미사</h3>
+                <div class="worship-time">{{ sunday_mass }}</div>
+                <p class="worship-description">
+                    주님의 날, 신자들이 함께 모여 성체성사를 거행하는 주요 미사입니다.
+                    라틴어와 한국어 혼용 전례로 진행됩니다.
+                </p>
             </div>
             
-            <!-- 정보 그리드 -->
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="info-icon">⛪</span>
-                    <div class="info-title">주일 미사</div>
-                    <div class="info-text">
-                        <span class="info-highlight">{{ sunday_mass }}</span><br>
-                        토요일 오후 7시 주일미사
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <span class="info-icon">🕯️</span>
-                    <div class="info-title">평일 미사</div>
-                    <div class="info-text">
-                        <span class="info-highlight">{{ weekday_mass }}</span><br>
-                        오후 7시 저녁미사
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <span class="info-icon">📍</span>
-                    <div class="info-title">성당 위치</div>
-                    <div class="info-text">
-                        {{ address }}<br>
-                        지하철 2호선 강남역 5분
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <span class="info-icon">👨‍💼</span>
-                    <div class="info-title">주임신부</div>
-                    <div class="info-text">
-                        <span class="info-highlight">{{ pastor_name }}</span><br>
-                        영성 지도 및 상담 가능
-                    </div>
+            <div class="worship-item scroll-animate">
+                <div class="worship-icon">🌅</div>
+                <h3 class="worship-name">평일 미사</h3>
+                <div class="worship-time">{{ weekday_mass }}</div>
+                <p class="worship-description">
+                    매일 드리는 평일 미사로 일상 속에서 주님과 만나는 시간입니다.
+                    조용하고 경건한 분위기에서 진행됩니다.
+                </p>
+            </div>
+            
+            <div class="worship-item scroll-animate">
+                <div class="worship-icon">🕯️</div>
+                <h3 class="worship-name">저녁 미사</h3>
+                <div class="worship-time">오후 7:00</div>
+                <p class="worship-description">
+                    하루를 마무리하며 드리는 저녁 미사로 마음의 평안을 얻는 시간입니다.
+                    촛불과 함께하는 신비로운 분위기입니다.
+                </p>
+            </div>
+            
+            <div class="worship-item scroll-animate">
+                <div class="worship-icon">📿</div>
+                <h3 class="worship-name">묵주기도</h3>
+                <div class="worship-time">매일 오후 6:30</div>
+                <p class="worship-description">
+                    성모 마리아와 함께하는 묵주기도로 하루의 은총을 감사드리는 시간입니다.
+                    전통적인 라틴어 기도와 함께합니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="divider">✦ ✦ ✦</div>
+
+<!-- Sacraments -->
+<section class="sacraments" id="sacraments">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <h2 class="section-title">칠성사 안내</h2>
+            <div class="ornament">⟡</div>
+            <p class="section-subtitle">하나님의 은총을 받는 거룩한 성사들</p>
+        </div>
+        
+        <div class="sacraments-grid">
+            <div class="sacrament-card scroll-animate">
+                <div class="sacrament-symbol">🙏</div>
+                <h3 class="sacrament-title">고해성사</h3>
+                <p class="sacrament-description">
+                    하나님의 용서를 받고 마음의 평화를 얻는 화해의 성사입니다.
+                </p>
+                <div class="sacrament-schedule">매일 미사 30분 전 | 토요일 17:00~19:00</div>
+            </div>
+            
+            <div class="sacrament-card scroll-animate">
+                <div class="sacrament-symbol">💒</div>
+                <h3 class="sacrament-title">혼인성사</h3>
+                <p class="sacrament-description">
+                    하나님 앞에서 맺는 거룩한 혼인의 약속과 축복의 성사입니다.
+                </p>
+                <div class="sacrament-schedule">사전 상담 필수 | 혼인준비교육 이수</div>
+            </div>
+            
+            <div class="sacrament-card scroll-animate">
+                <div class="sacrament-symbol">🕊️</div>
+                <h3 class="sacrament-title">세례성사</h3>
+                <p class="sacrament-description">
+                    그리스도교 신앙에 입문하는 첫 번째 성사입니다.
+                </p>
+                <div class="sacrament-schedule">매월 둘째 주일 | 교리교육 선수강</div>
+            </div>
+            
+            <div class="sacrament-card scroll-animate">
+                <div class="sacrament-symbol">⛪</div>
+                <h3 class="sacrament-title">견진성사</h3>
+                <p class="sacrament-description">
+                    성령의 은총을 받아 신앙을 굳건히 하는 성사입니다.
+                </p>
+                <div class="sacrament-schedule">연 1회 주교님 방문 시 | 별도 공지</div>
+            </div>
+            
+            <div class="sacrament-card scroll-animate">
+                <div class="sacrament-symbol">🍞</div>
+                <h3 class="sacrament-title">성체성사</h3>
+                <p class="sacrament-description">
+                    예수님의 몸과 피를 받아 모시는 영성체의 성사입니다.
+                </p>
+                <div class="sacrament-schedule">모든 미사 중 | 첫영성체 교육 필요</div>
+            </div>
+            
+            <div class="sacrament-card scroll-animate">
+                <div class="sacrament-symbol">✋</div>
+                <h3 class="sacrament-title">병자성사</h3>
+                <p class="sacrament-description">
+                    중병에 걸린 신자들을 위한 치유와 위로의 성사입니다.
+                </p>
+                <div class="sacrament-schedule">필요시 연락 | 성무일도 상담</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="divider">✦ ✦ ✦</div>
+
+<!-- Clergy -->
+<section class="clergy" id="clergy">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <h2 class="section-title">성직자 소개</h2>
+            <div class="ornament">⟡</div>
+            <p class="section-subtitle">하나님의 말씀을 전하는 목자들</p>
+        </div>
+        
+        <div class="clergy-grid">
+            <div class="clergy-card scroll-animate">
+                <div class="clergy-portrait">👨‍💼</div>
+                <h3 class="clergy-name">{{ pastor_name }}</h3>
+                <p class="clergy-position">주임신부</p>
+                <p class="clergy-bio">
+                    {{ tradition }}의 전통을 이어가며, 신자들과 함께 하나님의 사랑을 실천하고 있습니다. 
+                    로마 교황청 그레고리안 대학교에서 신학박사 학위를 취득하였습니다.
+                </p>
+            </div>
+            
+            <div class="clergy-card scroll-animate">
+                <div class="clergy-portrait">👨‍🎓</div>
+                <h3 class="clergy-name">김 요한 신부</h3>
+                <p class="clergy-position">보좌신부</p>
+                <p class="clergy-bio">
+                    청년사목과 교육을 담당하며, 다음 세대를 위한 신앙교육에 힘쓰고 있습니다. 
+                    특히 라틴어 미사와 전통 성가에 조예가 깊습니다.
+                </p>
+            </div>
+            
+            <div class="clergy-card scroll-animate">
+                <div class="clergy-portrait">👩‍💼</div>
+                <h3 class="clergy-name">이 마리아 수녀</h3>
+                <p class="clergy-position">원목수녀</p>
+                <p class="clergy-bio">
+                    본당 내 여성 신자들의 영성생활 지도와 자선사업을 담당하고 있습니다. 
+                    베네딕토회 전통에 따른 기도생활을 지도하고 있습니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Church History -->
+<section class="history" id="history">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <h2 class="section-title">교회 역사</h2>
+            <div class="ornament">⟡</div>
+            <p class="section-subtitle">{{ established }}부터 이어온 신앙의 여정</p>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item scroll-animate">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">{{ established|slice:"0:4" }}</div>
+                    <h4 class="timeline-title">성당 설립</h4>
+                    <p class="timeline-description">
+                        프랑스 선교사들에 의해 설립되어 지역 최초의 가톨릭 성당으로 시작되었습니다.
+                    </p>
                 </div>
             </div>
             
-            <!-- 액션 섹션 -->
-            <div class="action-section">
-                <h2 class="action-title">성당에서 여러분을 기다립니다</h2>
-                
-                <div class="action-buttons">
-                    <a href="tel:{{ phone }}" class="action-btn btn-primary">
-                        📞 성당에 연락하기
-                    </a>
-                    <a href="mailto:{{ email }}" class="action-btn btn-secondary">
-                        📧 상담 신청하기
-                    </a>
+            <div class="timeline-item scroll-animate">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">1960</div>
+                    <h4 class="timeline-title">성당 재건축</h4>
+                    <p class="timeline-description">
+                        한국전쟁으로 소실된 성당을 현재의 고딕 양식으로 재건축하여 오늘에 이르고 있습니다.
+                    </p>
                 </div>
-                
-                <div style="color: #666; font-size: 0.95em; line-height: 1.5;">
-                    세례, 견진, 혼인성사 준비 및 영성 상담을 위해 언제든 연락주세요.<br>
-                    새신자 교리반은 매월 첫째 주 일요일에 시작됩니다.
+            </div>
+            
+            <div class="timeline-item scroll-animate">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">1985</div>
+                    <h4 class="timeline-title">교구 본당 승격</h4>
+                    <p class="timeline-description">
+                        지역 신자 증가에 따라 교구 본당으로 승격되어 더 많은 신자들을 섬기게 되었습니다.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="timeline-item scroll-animate">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">2010</div>
+                    <h4 class="timeline-title">전통 전례 복원</h4>
+                    <p class="timeline-description">
+                        라틴어 미사와 전통 성가를 복원하여 가톨릭의 깊은 전통을 이어가고 있습니다.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- 하단 정보 -->
-    <div class="footer-info">
-        <div class="parish-info">
-            <div class="parish-item">
-                📅 <span class="parish-highlight">{{ established }}</span>
+</section>
+
+<div class="divider">✦ ✦ ✦</div>
+
+<!-- CTA Section -->
+<section class="cta">
+    <div class="container">
+        <div class="cta-content">
+            <h2 class="cta-title scroll-animate">하나님의 집에 오신 것을 환영합니다</h2>
+            <p class="cta-subtitle scroll-animate">
+                언제든지 편하게 성당을 방문하시고, 궁금한 것이 있으시면 연락주세요.<br>
+                주님의 평화가 여러분과 함께하시기를 빕니다.
+            </p>
+            
+            <div class="cta-buttons scroll-animate">
+                <a href="#contact" class="btn btn-primary">성당 방문하기</a>
+                <a href="mailto:{{ email }}" class="btn btn-outline">문의하기</a>
             </div>
-            <div class="parish-item">
-                🏛️ <span class="parish-highlight">{{ tradition }}</span> 신앙 공동체
-            </div>
-            <div class="parish-item">
-                📞 {{ phone }}
-            </div>
-            <div class="parish-item">
-                📧 {{ email }}
-            </div>
-        </div>
-        <div class="blessing">
-            하느님의 은총과 평화가 여러분과 함께하시기를 기원합니다. Ad Majorem Dei Gloriam
+            
+            <div class="ornament scroll-animate">Ad Majorem Dei Gloriam</div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <h2 class="section-title">연락처 및 오시는 길</h2>
+            <div class="ornament">⟡</div>
+        </div>
+        
+        <div class="contact-grid">
+            <div class="contact-item scroll-animate">
+                <div class="contact-icon">📞</div>
+                <h4>대표번호</h4>
+                <p>{{ phone }}</p>
+                <p>평일 09:00 - 18:00</p>
+                <p>주일 07:00 - 20:00</p>
+            </div>
+            
+            <div class="contact-item scroll-animate">
+                <div class="contact-icon">📧</div>
+                <h4>이메일</h4>
+                <p>{{ email }}</p>
+                <p>24시간 접수 가능</p>
+                <p>성사 및 상담 문의</p>
+            </div>
+            
+            <div class="contact-item scroll-animate">
+                <div class="contact-icon">📍</div>
+                <h4>오시는 길</h4>
+                <p>{{ address }}</p>
+                <p>지하철 3호선 교대역 5분</p>
+                <p>성당 주차장 이용 가능</p>
+            </div>
+            
+            <div class="contact-item scroll-animate">
+                <div class="contact-icon">⏰</div>
+                <h4>사무실 운영</h4>
+                <p>평일 09:00 - 17:00</p>
+                <p>토요일 09:00 - 12:00</p>
+                <p>주일 및 공휴일 휴무</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // 스크롤 애니메이션
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    // 모든 scroll-animate 요소를 관찰
+    document.querySelectorAll('.scroll-animate').forEach(el => {
+        observer.observe(el);
+    });
+
+    // 부드러운 스크롤
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const navHeight = document.querySelector('.navbar').offsetHeight;
+                const targetPosition = target.offsetTop - navHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // 네비게이션 스크롤 효과
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 100) {
+            navbar.style.background = 'rgba(253, 252, 247, 0.98)';
+            navbar.style.boxShadow = '0 5px 20px rgba(44, 24, 16, 0.15)';
+        } else {
+            navbar.style.background = 'rgba(253, 252, 247, 0.95)';
+            navbar.style.boxShadow = '0 2px 10px rgba(44, 24, 16, 0.1)';
+        }
+    });
+
+    // 페이지 로딩 시 순차적 애니메이션
+    window.addEventListener('load', () => {
+        const heroElements = document.querySelectorAll('.hero .scroll-animate');
+        heroElements.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, index * 300 + 500);
+        });
+    });
+
+    // 타이핑 효과 (라틴어 문구용)
+    function typeEffect(element, text, speed = 100) {
+        let i = 0;
+        element.textContent = '';
+        const timer = setInterval(() => {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+            } else {
+                clearInterval(timer);
+            }
+        }, speed);
+    }
+
+    // 십자가 번쩍임 효과
+    const cross = document.querySelector('.hero-cross');
+    if (cross) {
+        setInterval(() => {
+            cross.style.textShadow = '2px 2px 20px rgba(139, 105, 20, 0.8)';
+            setTimeout(() => {
+                cross.style.textShadow = '2px 2px 4px rgba(139, 105, 20, 0.3)';
+            }, 200);
+        }, 3000);
+    }
+</script>
 {% endblock %}

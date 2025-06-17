@@ -1,0 +1,864 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ company_name }} - {{ company_slogan }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', system-ui, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: #ffffff;
+        overflow-x: hidden;
+    }
+
+    /* 홈 버튼 */
+    .back-btn {
+        position: fixed;
+        top: 30px;
+        left: 30px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        z-index: 1001;
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        border: none;
+    }
+
+    .back-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(37, 99, 235, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* 네비게이션 */
+    .navbar {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        padding: 15px 0;
+    }
+
+    .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2563eb;
+        text-decoration: none;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 40px;
+        list-style: none;
+    }
+
+    .nav-links a {
+        color: #374151;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        color: #2563eb;
+    }
+
+    /* Hero Section - 문제점 제시 */
+    .hero {
+        padding: 120px 0 80px;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        text-align: center;
+        position: relative;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%232563eb" fill-opacity="0.03"><circle cx="30" cy="30" r="1.5"/></g></svg>');
+        pointer-events: none;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .problem-statement {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 30px;
+        line-height: 1.2;
+    }
+
+    .problem-highlight {
+        color: #dc2626;
+        position: relative;
+    }
+
+    .problem-list {
+        margin: 40px 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .problem-item {
+        font-size: 1.2rem;
+        color: #64748b;
+        margin: 15px 0;
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .problem-item::before {
+        content: '—';
+        position: absolute;
+        left: 0;
+        color: #dc2626;
+        font-weight: bold;
+    }
+
+    .solution-intro {
+        margin: 60px 0 40px;
+        padding: 40px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        border-radius: 20px;
+        color: white;
+        box-shadow: 0 20px 40px rgba(37, 99, 235, 0.2);
+    }
+
+    .solution-logo {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+        letter-spacing: -1px;
+    }
+
+    .solution-tagline {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+        opacity: 0.9;
+    }
+
+    .solution-description {
+        font-size: 1.1rem;
+        opacity: 0.8;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    /* 솔루션 프로세스 */
+    .process {
+        padding: 100px 0;
+        background: white;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 60px;
+    }
+
+    .process-steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        margin-top: 50px;
+    }
+
+    .process-step {
+        text-align: center;
+        padding: 40px 20px;
+        border-radius: 15px;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .process-step:hover {
+        border-color: #2563eb;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(37, 99, 235, 0.1);
+    }
+
+    .step-number {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 auto 20px;
+    }
+
+    .step-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 15px;
+    }
+
+    .step-description {
+        color: #64748b;
+        line-height: 1.6;
+    }
+
+    /* 기술 스택 섹션 */
+    .tech-stack {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+    }
+
+    .tech-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .tech-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    .tech-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .tech-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 10px;
+    }
+
+    .tech-description {
+        color: #64748b;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    /* 로드맵 섹션 */
+    .roadmap {
+        padding: 100px 0;
+        background: white;
+    }
+
+    .roadmap-timeline {
+        max-width: 800px;
+        margin: 50px auto 0;
+        position: relative;
+    }
+
+    .roadmap-timeline::before {
+        content: '';
+        position: absolute;
+        left: 30px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, #2563eb, #1d4ed8);
+    }
+
+    .roadmap-item {
+        position: relative;
+        padding-left: 80px;
+        margin-bottom: 60px;
+    }
+
+    .roadmap-dot {
+        position: absolute;
+        left: 20px;
+        top: 10px;
+        width: 20px;
+        height: 20px;
+        background: #2563eb;
+        border-radius: 50%;
+        border: 4px solid white;
+        box-shadow: 0 0 0 4px #e2e8f0;
+    }
+
+    .roadmap-quarter {
+        font-size: 0.9rem;
+        color: #2563eb;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .roadmap-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 10px;
+    }
+
+    .roadmap-description {
+        color: #64748b;
+        line-height: 1.6;
+    }
+
+    /* 팀 섹션 */
+    .team {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #1e293b 0%, #374151 100%);
+        color: white;
+        text-align: center;
+    }
+
+    .team .section-title {
+        color: white;
+    }
+
+    .team-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        margin-top: 50px;
+    }
+
+    .team-stat {
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #60a5fa;
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.1rem;
+    }
+
+    /* CTA 섹션 */
+    .cta {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        color: white;
+        text-align: center;
+    }
+
+    .cta-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .cta h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .cta p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 40px;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 15px 35px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: inline-block;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-primary {
+        background: white;
+        color: #2563eb;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+        color: #2563eb;
+        text-decoration: none;
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+    }
+
+    .btn-outline:hover {
+        background: white;
+        color: #2563eb;
+        text-decoration: none;
+    }
+
+    /* 연락처 섹션 */
+    .contact {
+        padding: 80px 0;
+        background: #f8fafc;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    .contact-item {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .contact-icon {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: #2563eb;
+    }
+
+    .contact-item h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 10px;
+    }
+
+    .contact-item p {
+        color: #64748b;
+        margin-bottom: 5px;
+    }
+
+    /* 반응형 디자인 */
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+
+        .problem-statement {
+            font-size: 1.8rem;
+        }
+
+        .solution-logo {
+            font-size: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .process-steps {
+            grid-template-columns: 1fr;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 홈 버튼 */
+    .back-btn {
+        position: fixed;
+        top: 30px;
+        left: 30px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        z-index: 1001;
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        border: none;
+    }
+
+    .back-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(37, 99, 235, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    .container {
+            padding: 0 15px;
+        }
+    }
+
+    /* 스크롤 애니메이션 */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease;
+    }
+
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- 홈 버튼 -->
+{% if request.resolver_match.url_name != 'home' %}
+<a href="{% url 'templates_app:home' %}" class="back-btn">← 홈으로</a>
+{% endif %}
+
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="container">
+        <div class="nav-content">
+            <a href="#" class="logo">{{ company_name }}</a>
+            <ul class="nav-links">
+                <li><a href="#solution">솔루션</a></li>
+                <li><a href="#technology">기술</a></li>
+                <li><a href="#roadmap">로드맵</a></li>
+                <li><a href="#team">팀</a></li>
+                <li><a href="#contact">연락처</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section - 문제점 제시 -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="problem-statement">
+                기업들의 <span class="problem-highlight">디지털 전환</span>이<br>
+                왜 이렇게 어려울까요?
+            </h1>
+            
+            <ul class="problem-list">
+                <li class="problem-item">복잡하고 비싼 AI 솔루션들</li>
+                <li class="problem-item">전문가 부족으로 인한 도입 지연</li>
+                <li class="problem-item">기존 시스템과의 호환성 문제</li>
+                <li class="problem-item">ROI 측정의 어려움</li>
+                <li class="problem-item">데이터 보안에 대한 우려</li>
+            </ul>
+
+            <div class="solution-intro fade-in">
+                <div class="solution-logo">{{ company_name }}</div>
+                <div class="solution-tagline">{{ company_slogan }}</div>
+                <p class="solution-description">
+                    {{ company_subtitle }}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 솔루션 프로세스 -->
+<section class="process" id="solution">
+    <div class="container">
+        <h2 class="section-title fade-in">간단한 3단계로 시작하는 AI 혁신</h2>
+        
+        <div class="process-steps">
+            <div class="process-step fade-in">
+                <div class="step-number">1</div>
+                <h3 class="step-title">무료 컨설팅</h3>
+                <p class="step-description">
+                    현재 비즈니스 프로세스를 분석하고 최적의 AI 솔루션을 제안해드립니다.
+                </p>
+            </div>
+            
+            <div class="process-step fade-in">
+                <div class="step-number">2</div>
+                <h3 class="step-title">맞춤형 개발</h3>
+                <p class="step-description">
+                    기존 시스템과 완벽하게 연동되는 AI 솔루션을 신속하게 개발합니다.
+                </p>
+            </div>
+            
+            <div class="process-step fade-in">
+                <div class="step-number">3</div>
+                <h3 class="step-title">운영 & 관리</h3>
+                <p class="step-description">
+                    지속적인 모니터링과 최적화를 통해 성과를 극대화합니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 기술 스택 -->
+<section class="tech-stack" id="technology">
+    <div class="container">
+        <h2 class="section-title fade-in">핵심 기술</h2>
+        
+        <div class="tech-grid">
+            <div class="tech-card fade-in">
+                <div class="tech-icon">🤖</div>
+                <h3 class="tech-title">Machine Learning Platform</h3>
+                <p class="tech-description">
+                    TensorFlow, PyTorch 기반의 확장 가능한 머신러닝 플랫폼으로 다양한 비즈니스 요구사항에 대응합니다.
+                </p>
+            </div>
+            
+            <div class="tech-card fade-in">
+                <div class="tech-icon">📊</div>
+                <h3 class="tech-title">Big Data Analytics</h3>
+                <p class="tech-description">
+                    Apache Spark, Hadoop 클러스터를 활용한 대용량 데이터 실시간 처리 및 분석 시스템입니다.
+                </p>
+            </div>
+            
+            <div class="tech-card fade-in">
+                <div class="tech-icon">☁️</div>
+                <h3 class="tech-title">Cloud Native Architecture</h3>
+                <p class="tech-description">
+                    Kubernetes, Docker 기반의 마이크로서비스 아키텍처로 안정적이고 확장 가능한 서비스를 제공합니다.
+                </p>
+            </div>
+            
+            <div class="tech-card fade-in">
+                <div class="tech-icon">🔒</div>
+                <h3 class="tech-title">Enterprise Security</h3>
+                <p class="tech-description">
+                    Zero Trust 보안 모델과 엔드투엔드 암호화를 통해 기업 데이터를 안전하게 보호합니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 개발 로드맵 -->
+<section class="roadmap" id="roadmap">
+    <div class="container">
+        <h2 class="section-title fade-in">개발 로드맵</h2>
+        
+        <div class="roadmap-timeline">
+            <div class="roadmap-item fade-in">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-quarter">2024년 1-2분기</div>
+                <h3 class="roadmap-title">AI 자동화 플랫폼 런칭</h3>
+                <p class="roadmap-description">
+                    기업의 반복적인 업무를 자동화하는 노코드 AI 플랫폼을 출시합니다. 
+                    드래그 앤 드롭만으로 AI 워크플로우를 구성할 수 있습니다.
+                </p>
+            </div>
+            
+            <div class="roadmap-item fade-in">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-quarter">2024년 3-4분기</div>
+                <h3 class="roadmap-title">실시간 예측 분석 시스템</h3>
+                <p class="roadmap-description">
+                    고객 행동, 시장 트렌드, 재고 관리 등을 실시간으로 예측하는 
+                    AI 시스템으로 비즈니스 의사결정을 지원합니다.
+                </p>
+            </div>
+            
+            <div class="roadmap-item fade-in">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-quarter">2025년 1-2분기</div>
+                <h3 class="roadmap-title">글로벌 AI 마켓플레이스</h3>
+                <p class="roadmap-description">
+                    다양한 산업군을 위한 AI 모델과 솔루션을 거래할 수 있는 
+                    글로벌 마켓플레이스를 구축합니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 팀 -->
+<section class="team" id="team">
+    <div class="container">
+        <h2 class="section-title fade-in">{{ ceo_name }}이 이끄는 전문가 팀</h2>
+        <p class="fade-in" style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 50px;">
+            글로벌 빅테크 출신 엔지니어들과 AI 박사급 연구진으로 구성된 최고의 팀입니다.
+        </p>
+        
+        <div class="team-stats">
+            <div class="team-stat fade-in">
+                <div class="stat-number">{{ team_size }}</div>
+                <div class="stat-label">전문 인력</div>
+            </div>
+            
+            <div class="team-stat fade-in">
+                <div class="stat-number">{{ funding }}</div>
+                <div class="stat-label">투자 단계</div>
+            </div>
+            
+            <div class="team-stat fade-in">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">특허 출원</div>
+            </div>
+            
+            <div class="team-stat fade-in">
+                <div class="stat-number">50억원</div>
+                <div class="stat-label">누적 투자유치</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <div class="container">
+        <div class="cta-content">
+            <h2 class="fade-in">AI 혁신의 파트너가 되어주세요</h2>
+            <p class="fade-in">지금 문의하시면 무료 AI 컨설팅과 POC 개발 서비스를 제공해드립니다.</p>
+            
+            <div class="cta-buttons fade-in">
+                <a href="#contact" class="btn btn-primary">무료 상담 신청</a>
+                <a href="mailto:{{ email }}" class="btn btn-outline">투자 제안서 받기</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+    <div class="container">
+        <h2 class="section-title fade-in">연락처</h2>
+        
+        <div class="contact-grid">
+            <div class="contact-item fade-in">
+                <div class="contact-icon">📞</div>
+                <h4>대표번호</h4>
+                <p>{{ phone }}</p>
+                <p>평일 09:00 - 18:00</p>
+            </div>
+            
+            <div class="contact-item fade-in">
+                <div class="contact-icon">📧</div>
+                <h4>이메일</h4>
+                <p>{{ email }}</p>
+                <p>24시간 접수 가능</p>
+            </div>
+            
+            <div class="contact-item fade-in">
+                <div class="contact-icon">📍</div>
+                <h4>오시는 길</h4>
+                <p>{{ address }}</p>
+                <p>지하철 2호선 강남역 도보 5분</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // 스크롤 애니메이션
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    // 모든 fade-in 요소를 관찰
+    document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+    });
+
+    // 부드러운 스크롤
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const navHeight = document.querySelector('.navbar').offsetHeight;
+                const targetPosition = target.offsetTop - navHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // 네비게이션 스크롤 효과
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 100) {
+            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+        } else {
+            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            navbar.style.boxShadow = 'none';
+        }
+    });
+</script>
+{% endblock %}
