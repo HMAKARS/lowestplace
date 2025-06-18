@@ -22,8 +22,8 @@
     /* 홈 버튼 */
     .back-btn {
         position: fixed;
-        top: 30px;
-        left: 30px;
+        bottom: 20px;
+        right: 5%;
         background: linear-gradient(135deg, #2563eb, #1d4ed8);
         color: white;
         padding: 12px 25px;
@@ -527,30 +527,33 @@
             align-items: center;
         }
 
-        /* 홈 버튼 */
-    .back-btn {
-        position: fixed;
-        top: 30px;
-        left: 30px;
-        background: linear-gradient(135deg, #2563eb, #1d4ed8);
-        color: white;
-        padding: 12px 25px;
-        border-radius: 25px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        z-index: 1001;
-        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
-        border: none;
-    }
+        /* 모바일에서 홈 버튼을 상단 가운데로 이동하고 투명도 적용 */
+        .back-btn {
+            position: fixed;
+            bottom: 5%;
+            right: 1%;
+            transform: translateX(-20%);
+            background: rgba(37, 99, 235, 0.5);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-    .back-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 15px 35px rgba(37, 99, 235, 0.4);
-        color: white;
-        text-decoration: none;
-    }
+        .back-btn:hover {
+            background: rgba(37, 99, 235, 0.7);
+            transform: translateX(-50%) translateY(-1px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            color: white;
+            text-decoration: none;
+        }
 
     .container {
             padding: 0 15px;
@@ -572,11 +575,11 @@
 {% endblock %}
 
 {% block content %}
+
 <!-- 홈 버튼 -->
 {% if request.resolver_match.url_name != 'home' %}
 <a href="{% url 'templates_app:home' %}" class="back-btn">← 홈으로</a>
 {% endif %}
-
 
 <!-- Navigation -->
 <nav class="navbar">
@@ -593,6 +596,8 @@
         </div>
     </div>
 </nav>
+
+
 
 <!-- Hero Section - 문제점 제시 -->
 <section class="hero">
@@ -811,6 +816,7 @@
         </div>
     </div>
 </section>
+
 
 <script>
     // 스크롤 애니메이션

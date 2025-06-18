@@ -28,8 +28,8 @@
     /* 홈 버튼 */
     .back-btn {
         position: fixed;
-        top: 30px;
-        left: 30px;
+        bottom: 20px;
+        right: 5%;
         background: linear-gradient(135deg, #8b5cf6, #7c3aed);
         color: white;
         padding: 12px 25px;
@@ -702,8 +702,32 @@
             text-align: center;
         }
 
-        .nav-links {
-            display: none;
+        /* 모바일에서 홈 버튼을 상단 가운데로 이동하고 투명도 적용 */
+        .back-btn {
+            position: fixed;
+            bottom: 5%;
+            right: 1%;
+            transform: translateX(-20%);
+            background: rgba(139, 92, 246, 0.5);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .back-btn:hover {
+            background: rgba(139, 92, 246, 0.7);
+            transform: translateX(-50%) translateY(-1px);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+            color: white;
+            text-decoration: none;
         }
 
         .product-title {
