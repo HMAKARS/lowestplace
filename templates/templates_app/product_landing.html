@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ product_name }} - {{ product_slogan }}{% endblock %}
+{% block title %}Alpine Amber Perfume - 알프스의 신선함, 앰버의 따스함{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -780,19 +780,19 @@
 
 <!-- Announcement Bar -->
 <div class="announcement-bar">
-    🎉 한정 특가! {{ discount }} 할인 + 무료배송 - 오늘 밤 12시까지!
+    ✨ 한정 수량! Alpine Amber Perfume 25% 할인 + 무료배송 - 오늘 밤 12시까지!
 </div>
 
 <!-- Navigation -->
 <nav class="navbar">
     <div class="container">
         <div class="nav-content">
-            <a href="#" class="logo">{{ company }}</a>
+            <a href="#" class="logo">Alpine Amber</a>
             <ul class="nav-links">
                 <li><a href="#features">특징</a></li>
-                <li><a href="#specs">사양</a></li>
+                <li><a href="#specs">성분</a></li>
                 <li><a href="#reviews">후기</a></li>
-                <li><a href="#support">지원</a></li>
+                <li><a href="#support">문의</a></li>
             </ul>
             <div class="nav-actions">
                 <div class="cart-icon">
@@ -810,33 +810,30 @@
         <div class="hero-content">
             <div class="product-gallery">
                 <div class="main-image" id="mainImage">
-                    ⌚
+                    <img src="{% static 'images/product.jpg' %}" alt="Alpine Amber Perfume" style="width:100%;height:100%;object-fit:cover;border-radius:20px;">
                 </div>
                 <div class="image-thumbnails">
-                    <div class="thumbnail active">⌚</div>
-                    <div class="thumbnail">📱</div>
-                    <div class="thumbnail">💻</div>
-                    <div class="thumbnail">🎧</div>
+                    <div class="thumbnail active"><img src="{% static 'images/product.jpg' %}" alt="Alpine Amber Perfume" style="width:100%;height:100%;object-fit:cover;border-radius:10px;"></div>
                 </div>
             </div>
             
             <div class="product-info">
-                <span class="product-badge">✨ 베스트셀러</span>
-                <h1 class="product-title">{{ product_name }}</h1>
-                <p class="product-subtitle">{{ product_subtitle }}</p>
+                <span class="product-badge">🌄 신제품</span>
+                <h1 class="product-title">Alpine Amber Perfume</h1>
+                <p class="product-subtitle">알프스의 청량함과 따스한 앰버가 어우러진 프리미엄 향수. 자연의 신선함과 고급스러운 잔향을 경험하세요.</p>
                 
                 <div class="rating">
                     <div class="stars">★★★★★</div>
-                    <span class="rating-text">4.8/5 (2,847 리뷰)</span>
+                    <span class="rating-text">4.9/5 (1,284 리뷰)</span>
                 </div>
                 
                 <div class="price-section">
                     <div class="price-main">
-                        <span class="price-original">{{ original_price }}</span>
-                        <span class="price-discount">{{ discount }} 할인</span>
+                        <span class="price-original">₩120,000</span>
+                        <span class="price-discount">25% 할인</span>
                     </div>
-                    <div style="font-size: 3rem; font-weight: 800; color: #1f2937;">{{ price }}</div>
-                    <p class="price-info">💳 무이자 할부 6개월 가능 | 🚚 {{ shipping }}</p>
+                    <div style="font-size: 3rem; font-weight: 800; color: #1f2937;">₩89,000</div>
+                    <p class="price-info">💳 무이자 할부 6개월 가능 | 🚚 무료배송</p>
                 </div>
                 
                 <div class="purchase-actions">
@@ -853,14 +850,14 @@
                         🛒 장바구니 담기
                     </button>
                     <button class="btn btn-secondary">
-                        ❤️ 찜하기
+                        ❤️ 위시리스트
                     </button>
                 </div>
                 
                 <div class="trust-indicators">
                     <div class="trust-item">
                         <span class="trust-icon">✅</span>
-                        <span>{{ warranty }}</span>
+                        <span>정품 보장</span>
                     </div>
                     <div class="trust-item">
                         <span class="trust-icon">🔒</span>
@@ -868,7 +865,7 @@
                     </div>
                     <div class="trust-item">
                         <span class="trust-icon">🚚</span>
-                        <span>당일발송</span>
+                        <span>무료 당일배송</span>
                     </div>
                 </div>
             </div>
@@ -881,29 +878,34 @@
     <div class="container">
         <div class="section-header">
             <h2 class="section-title">핵심 특징</h2>
-            <p class="section-subtitle">{{ product_name }}만의 혁신적인 기능들을 경험해보세요</p>
+            <p class="section-subtitle">Alpine Amber Perfume만의 특별함을 경험하세요</p>
         </div>
         
         <div class="features-grid">
-            {% for feature in features %}
             <div class="feature-card">
-                <div class="feature-icon">{{ feature.icon }}</div>
-                <h3 class="feature-title">{{ feature.title }}</h3>
-                <p class="feature-description">{{ feature.description }}</p>
+                <div class="feature-icon">🧡</div>
+                <h3 class="feature-title">따스한 앰버 & 프레시 알프스</h3>
+                <p class="feature-description">알프스의 상쾌한 공기와 고급 앰버의 조화로운 향.</p>
             </div>
-            {% endfor %}
-            
-            <!-- 추가 특징들 -->
             <div class="feature-card">
-                <div class="feature-icon">🔋</div>
-                <h3 class="feature-title">장시간 배터리</h3>
-                <p class="feature-description">일주일 사용 가능한 초장수명 배터리로 충전 걱정 없이 사용하세요.</p>
+                <div class="feature-icon">🌲</div>
+                <h3 class="feature-title">자연 유래 성분</h3>
+                <p class="feature-description">천연 에센셜 오일과 고순도 원료만을 사용.</p>
             </div>
-            
             <div class="feature-card">
-                <div class="feature-icon">💧</div>
-                <h3 class="feature-title">방수 기능</h3>
-                <p class="feature-description">IP68 등급 방수로 수영, 샤워 중에도 안심하고 착용 가능합니다.</p>
+                <div class="feature-icon">🕰️</div>
+                <h3 class="feature-title">오래가는 잔향</h3>
+                <p class="feature-description">한 번의 분사로 하루 종일 지속되는 향기.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎁</div>
+                <h3 class="feature-title">프리미엄 패키지</h3>
+                <p class="feature-description">선물용으로도 완벽한 고급스러운 패키지 디자인.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌿</div>
+                <h3 class="feature-title">비건 & 동물실험 무관</h3>
+                <p class="feature-description">동물실험을 하지 않고, 비건 인증을 받은 친환경 제품.</p>
             </div>
         </div>
     </div>
@@ -913,47 +915,43 @@
 <section class="specs" id="specs">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">제품 사양</h2>
-            <p class="section-subtitle">프리미엄 품질의 하드웨어와 소프트웨어</p>
+            <h2 class="section-title">주요 성분</h2>
+            <p class="section-subtitle">자연에서 온 순수한 원료</p>
         </div>
         
         <div class="specs-table">
             <div class="specs-header">
-                <h3>{{ product_name }} 상세 스펙</h3>
-                <p>업계 최고 수준의 성능과 품질</p>
+                <h3>Alpine Amber Perfume 상세 성분</h3>
+                <p>피부에 안전한 프리미엄 원료만을 사용합니다</p>
             </div>
             <div class="specs-content">
                 <div class="spec-row">
-                    <div class="spec-label">디스플레이</div>
-                    <div class="spec-value">1.4인치 Super AMOLED <span class="spec-highlight">NEW</span></div>
+                    <div class="spec-label">탑 노트</div>
+                    <div class="spec-value">알프스 허브, 시트러스, 민트</div>
                 </div>
                 <div class="spec-row">
-                    <div class="spec-label">해상도</div>
-                    <div class="spec-value">454 x 454 픽셀 (326 PPI)</div>
+                    <div class="spec-label">미들 노트</div>
+                    <div class="spec-value">화이트 플로럴, 앰버, 라벤더</div>
                 </div>
                 <div class="spec-row">
-                    <div class="spec-label">프로세서</div>
-                    <div class="spec-value">64비트 듀얼코어 ARM</div>
+                    <div class="spec-label">베이스 노트</div>
+                    <div class="spec-value">머스크, 샌달우드, 바닐라</div>
                 </div>
                 <div class="spec-row">
-                    <div class="spec-label">메모리</div>
-                    <div class="spec-value">16GB 내장 스토리지</div>
+                    <div class="spec-label">용량</div>
+                    <div class="spec-value">50ml / 100ml</div>
                 </div>
                 <div class="spec-row">
-                    <div class="spec-label">배터리</div>
-                    <div class="spec-value">284mAh (7일 사용) <span class="spec-highlight">업계 1위</span></div>
+                    <div class="spec-label">제조국</div>
+                    <div class="spec-value">스위스</div>
                 </div>
                 <div class="spec-row">
-                    <div class="spec-label">센서</div>
-                    <div class="spec-value">심박, GPS, 가속도, 자이로스코프, 고도계</div>
+                    <div class="spec-label">비건 인증</div>
+                    <div class="spec-value">O</div>
                 </div>
                 <div class="spec-row">
-                    <div class="spec-label">연결성</div>
-                    <div class="spec-value">Bluetooth 5.2, Wi-Fi, NFC</div>
-                </div>
-                <div class="spec-row">
-                    <div class="spec-label">방수등급</div>
-                    <div class="spec-value">5ATM + IP68 (50m 방수)</div>
+                    <div class="spec-label">피부 테스트</div>
+                    <div class="spec-value">완료</div>
                 </div>
             </div>
         </div>
@@ -969,35 +967,16 @@
         </div>
         
         <div class="reviews-grid">
-            {% for review in reviews %}
             <div class="review-card">
                 <div class="review-header">
-                    <div class="reviewer-avatar">{{ review.name|first }}</div>
+                    <div class="reviewer-avatar">이</div>
                     <div class="reviewer-info">
-                        <h4>{{ review.name }}</h4>
-                        <div class="reviewer-stars">
-                            {% for i in "12345"|make_list %}
-                                {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <p class="review-text">"{{ review.comment }}"</p>
-            </div>
-            {% endfor %}
-            
-            <!-- 추가 리뷰들 -->
-            <div class="review-card">
-                <div class="review-header">
-                    <div class="reviewer-avatar">김</div>
-                    <div class="reviewer-info">
-                        <h4>김○○님</h4>
+                        <h4>이○○님</h4>
                         <div class="reviewer-stars">★★★★★</div>
                     </div>
                 </div>
-                <p class="review-text">"배터리가 정말 오래 가요! 일주일 충전 안 해도 되니까 너무 편해요. 디자인도 세련되고 기능도 다양해서 만족합니다."</p>
+                <p class="review-text">"알프스의 상쾌함이 그대로 느껴져요. 잔향이 정말 고급스럽고 오래갑니다!"</p>
             </div>
-            
             <div class="review-card">
                 <div class="review-header">
                     <div class="reviewer-avatar">박</div>
@@ -1006,7 +985,17 @@
                         <div class="reviewer-stars">★★★★★</div>
                     </div>
                 </div>
-                <p class="review-text">"운동할 때 정말 유용해요. 방수 기능 덕분에 수영할 때도 착용하고, 심박수 측정도 정확합니다. 강추!"</p>
+                <p class="review-text">"선물용으로 샀는데 패키지가 너무 예뻐서 받는 분이 정말 좋아했어요."</p>
+            </div>
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-avatar">최</div>
+                    <div class="reviewer-info">
+                        <h4>최○○님</h4>
+                        <div class="reviewer-stars">★★★★★</div>
+                    </div>
+                </div>
+                <p class="review-text">"비건 인증이라 믿고 쓸 수 있고, 향이 자연스러워서 데일리로 딱입니다."</p>
             </div>
         </div>
     </div>
@@ -1018,8 +1007,8 @@
         <div class="cta-content">
             <h2 class="cta-title">지금 주문하고 특별 혜택 받으세요!</h2>
             <p class="cta-subtitle">
-                한정수량! 선착순 1,000명 {{ discount }} 할인 + 무료배송<br>
-                놓치면 후회하는 최저가 기회입니다.
+                한정수량! 선착순 1,000명 25% 할인 + 무료배송<br>
+                자연의 신선함과 고급스러움을 동시에 경험하세요.
             </p>
             
             <div class="cta-actions">
@@ -1034,11 +1023,11 @@
             <div class="guarantee-items">
                 <div class="guarantee-item">
                     <span class="guarantee-icon">🚚</span>
-                    <span class="guarantee-text">{{ shipping }}</span>
+                    <span class="guarantee-text">무료배송</span>
                 </div>
                 <div class="guarantee-item">
                     <span class="guarantee-icon">🛡️</span>
-                    <span class="guarantee-text">{{ warranty }}</span>
+                    <span class="guarantee-text">정품 보장</span>
                 </div>
                 <div class="guarantee-item">
                     <span class="guarantee-icon">💯</span>
@@ -1052,7 +1041,7 @@
             
             <div style="margin-top: 40px; opacity: 0.8;">
                 <p>📧 온라인 주문: {{ email }}</p>
-                <p>🏢 {{ company }} | 믿을 수 있는 브랜드</p>
+                <p>🏢 Alpine Amber | 프리미엄 향수 브랜드</p>
             </div>
         </div>
     </div>
