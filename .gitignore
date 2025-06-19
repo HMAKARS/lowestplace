@@ -25,7 +25,8 @@ media/
 
 # ========== 정적 파일 (수집된) ==========
 staticfiles/
-/static/
+/static/css/
+/ststic/js/
 
 # ========== IDE 설정 ==========
 .vscode/
