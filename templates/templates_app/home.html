@@ -320,27 +320,7 @@
         <!--<p class="handwritten">진짜 좋은 템플릿들만 골라왔어요! 🎯</p>-->
     </header>
 
-    <div class="stats-section">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <h3>5개</h3>
-                <p>검증된 템플릿</p>
-            </div>
-            <div class="stat-item">
-                <h3>4개</h3>
-                <p>다양한 업종</p>
-            </div>
-            <div class="stat-item">
-                <h3>100%</h3>
-                <p>모바일 최적화</p>
-            </div>
-            <div class="stat-item">
-                <h3>무료</h3>
-                <p>미리보기</p>
-            </div>
-        </div>
-    </div>
-    
+
     <!--
     <div class="filter-tabs">
         <a href="#all" class="filter-btn active" data-category="all">전체 보기</a>
@@ -352,6 +332,29 @@
     -->
 
     <div class="templates-grid" id="templatesGrid">
+
+        <!-- 비즈니스 서비스 템플릿 -->
+        <div class="template-card" data-category="business">
+            <div class="template-preview">
+                <img src="{% static 'images/biz.png' %}" alt="비즈니스 서비스 미리보기" class="preview-img">
+            </div>
+            <div class="template-info">
+                <span class="template-category business">비즈니스</span>
+                <h3 class="template-title">SmartBiz Solutions</h3>
+                <p class="template-description">디지털 트랜스포메이션 전문 컨설팅 회사를 위한 프로페셔널한 웹사이트. 기업 고객들에게 신뢰감을 줄 수 있는 세련된 디자인입니다.</p>
+                <div class="template-features">
+                    <span class="feature-tag">컨설팅 서비스</span>
+                    <span class="feature-tag">포트폴리오</span>
+                    <span class="feature-tag">고객 후기</span>
+                    <span class="feature-tag">상담 신청</span>
+                    <span class="feature-tag">회사 소개</span>
+                </div>
+                <div class="template-actions">
+                    <a href="{% url 'templates_app:business_service_landing' %}" class="btn btn-primary">미리보기</a>
+                </div>
+            </div>
+        </div>
+
         <!-- 스타트업 템플릿 -->
         <div class="template-card" data-category="startup">
             <div class="template-preview">
@@ -430,8 +433,8 @@
                     <span class="feature-tag">목회진 소개</span>
                 </div>
                 <div class="template-actions">
-                    <a href="{% url 'templates_app:modern_landing' %}" class="btn btn-primary">랜딩페이지</a>
-                    <a href="{% url 'templates_app:modern' %}" class="btn btn-outline">홈페이지</a>
+                    <a href="{% url 'templates_app:modern' %}" class="btn btn-primary">미리보기</a>
+                    <!--<a href="{% url 'templates_app:modern' %}" class="btn btn-outline">홈페이지</a>-->
                 </div>
             </div>
         </div>
@@ -451,8 +454,8 @@
                     <span class="feature-tag">성당 안내</span>
                 </div>
                 <div class="template-actions">
-                    <a href="{% url 'templates_app:traditional_landing' %}" class="btn btn-primary">랜딩페이지</a>
-                    <a href="{% url 'templates_app:traditional' %}" class="btn btn-outline">홈페이지</a>
+                    <a href="{% url 'templates_app:traditional' %}" class="btn btn-primary">미리보기</a>
+                    <!--<a href="{% url 'templates_app:traditional' %}" class="btn btn-outline">홈페이지</a>-->
                 </div>
             </div>
         </div>
@@ -467,7 +470,7 @@
     filterBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            
+
             // 활성화된 버튼 스타일 변경
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -493,7 +496,7 @@
         templateCards.forEach((card, index) => {
             card.style.opacity = '0';
             card.style.transform = 'translateY(30px)';
-            
+
             setTimeout(() => {
                 card.style.transition = 'all 0.6s ease-out';
                 card.style.opacity = '1';

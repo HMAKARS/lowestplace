@@ -17,4 +17,6 @@ urlpatterns = [
     # 교회/성당 템플릿 - 랜딩페이지
     path('landing-modern/', views.modern_landing, name='modern_landing'),
     path('landing-traditional/', views.traditional_landing, name='traditional_landing'),
+    # IT/통신 솔루션 기업 랜딩페이지
+    path('techlink/', views.business_service_landing, name='business_service_landing'),
 ]
