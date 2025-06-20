@@ -1,0 +1,1208 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ company_name }} - {{ company_slogan }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+        line-height: 1.6;
+        color: #1a1a1a;
+        background-color: #ffffff;
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* ========== 헤더 ========== */
+    .header {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid #e5e7eb;
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: white;
+        font-weight: 700;
+    }
+
+    .company-info h1 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        letter-spacing: -0.5px;
+    }
+
+    .company-info p {
+        font-size: 12px;
+        color: #666;
+        font-weight: 500;
+    }
+
+    .header-nav {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+    }
+
+    .nav-link {
+        color: #374151;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        padding: 8px 0;
+        position: relative;
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #0066cc;
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: #0066cc;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+    .contact-btn {
+        background: #0066cc;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        transition: all 0.3s ease;
+    }
+
+    .contact-btn:hover {
+        background: #0052a3;
+        transform: translateY(-1px);
+    }
+
+    /* ========== 히어로 섹션 ========== */
+    .hero {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0,102,204,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        opacity: 0.5;
+    }
+
+    .hero-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-text h1 {
+        font-size: 48px;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: #1a1a1a;
+        letter-spacing: -1px;
+    }
+
+    .hero-text .subtitle {
+        font-size: 18px;
+        color: #64748b;
+        margin-bottom: 32px;
+        font-weight: 500;
+        line-height: 1.6;
+    }
+
+    .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 20px 16px;
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .stat-number {
+        font-size: 24px;
+        font-weight: 700;
+        color: #0066cc;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 16px;
+    }
+
+    .btn-primary {
+        background: #0066cc;
+        color: white;
+        padding: 14px 28px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: #0052a3;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,102,204,0.3);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: #374151;
+        padding: 14px 28px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        border: 1px solid #d1d5db;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        border-color: #0066cc;
+        color: #0066cc;
+        transform: translateY(-2px);
+    }
+
+    .hero-visual {
+        position: relative;
+        padding: 40px;
+    }
+
+    .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+
+    .tech-item {
+        background: white;
+        padding: 24px 16px;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .tech-item:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+        border-color: #0066cc;
+    }
+
+    .tech-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 12px;
+        color: white;
+        font-size: 18px;
+    }
+
+    .tech-item h4 {
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 4px;
+    }
+
+    .tech-item p {
+        font-size: 11px;
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    /* ========== 솔루션 섹션 ========== */
+    .solutions-section {
+        padding: 80px 0;
+        background: white;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-title {
+        font-size: 36px;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+        letter-spacing: -0.5px;
+    }
+
+    .section-subtitle {
+        font-size: 16px;
+        color: #64748b;
+        font-weight: 500;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .solutions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 32px;
+    }
+
+    .solution-card {
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 32px 24px;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .solution-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }
+
+    .solution-card:hover {
+        background: white;
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        border-color: #0066cc;
+    }
+
+    .solution-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .solution-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .solution-card h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+        letter-spacing: -0.3px;
+    }
+
+    .solution-description {
+        font-size: 14px;
+        color: #64748b;
+        margin-bottom: 20px;
+        line-height: 1.6;
+        font-weight: 500;
+    }
+
+    .solution-features {
+        list-style: none;
+        padding: 0;
+    }
+
+    .solution-features li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0;
+        color: #374151;
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+    .solution-features li::before {
+        content: '●';
+        color: #0066cc;
+        font-size: 8px;
+    }
+
+    /* ========== 기술 역량 섹션 ========== */
+    .tech-capabilities {
+        padding: 80px 0;
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        color: white;
+    }
+
+    .capabilities-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+    }
+
+    .capabilities-text h2 {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 20px;
+        letter-spacing: -0.5px;
+    }
+
+    .capabilities-text p {
+        font-size: 16px;
+        color: #cbd5e1;
+        margin-bottom: 32px;
+        line-height: 1.7;
+        font-weight: 500;
+    }
+
+    .capabilities-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .capability-item {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        padding: 20px 16px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .capability-item:hover {
+        background: rgba(255,255,255,0.1);
+        transform: translateY(-4px);
+    }
+
+    .capability-icon {
+        font-size: 32px;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .capability-item h4 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .capability-item p {
+        font-size: 12px;
+        color: #94a3b8;
+        margin: 0;
+    }
+
+    /* ========== 성과 지표 섹션 ========== */
+    .metrics-section {
+        padding: 80px 0;
+        background: white;
+    }
+
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        margin-top: 60px;
+    }
+
+    .metric-card {
+        text-align: center;
+        padding: 32px 24px;
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .metric-card:hover {
+        background: white;
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+    }
+
+    .metric-number {
+        font-size: 40px;
+        font-weight: 800;
+        color: #0066cc;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .metric-label {
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .metric-description {
+        font-size: 12px;
+        color: #94a3b8;
+        font-weight: 500;
+    }
+
+    /* ========== 고객사 섹션 ========== */
+    .clients-section {
+        padding: 80px 0;
+        background: #f8fafc;
+    }
+
+    .clients-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 32px;
+        margin-top: 60px;
+    }
+
+    .client-card {
+        background: white;
+        border-radius: 12px;
+        padding: 32px 28px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .client-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        border-color: #0066cc;
+    }
+
+    .client-logo {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .client-quote {
+        font-size: 15px;
+        color: #374151;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        font-weight: 500;
+        font-style: italic;
+    }
+
+    .client-info h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+    }
+
+    .client-info p {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    /* ========== CTA 섹션 ========== */
+    .final-cta {
+        padding: 80px 0;
+        background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+        color: white;
+        text-align: center;
+    }
+
+    .cta-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .cta-title {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 16px;
+        letter-spacing: -0.5px;
+    }
+
+    .cta-subtitle {
+        font-size: 16px;
+        color: #bfdbfe;
+        margin-bottom: 40px;
+        font-weight: 500;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-cta-primary {
+        background: white;
+        color: #0066cc;
+        padding: 16px 32px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-cta-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255,255,255,0.3);
+    }
+
+    .btn-cta-secondary {
+        background: rgba(255,255,255,0.1);
+        color: white;
+        padding: 16px 32px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        border: 1px solid rgba(255,255,255,0.3);
+        transition: all 0.3s ease;
+    }
+
+    .btn-cta-secondary:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-2px);
+    }
+
+    /* ========== 푸터 ========== */
+    .footer {
+        background: #1a1a1a;
+        color: white;
+        padding: 60px 0 30px;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+    }
+
+    .footer-section h4 {
+        color: #0066cc;
+        margin-bottom: 20px;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .footer-section p, .footer-section a {
+        color: #a1a1aa;
+        text-decoration: none;
+        margin-bottom: 12px;
+        transition: color 0.3s;
+        display: block;
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+    .footer-section a:hover {
+        color: #0066cc;
+    }
+
+    .footer-bottom {
+        border-top: 1px solid #374151;
+        padding-top: 30px;
+        text-align: center;
+        color: #71717a;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    /* ========== 반응형 디자인 ========== */
+    @media (max-width: 1024px) {
+        .hero-content {
+            grid-template-columns: 1fr;
+            gap: 40px;
+            text-align: center;
+        }
+
+        .capabilities-content {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .tech-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 16px;
+        }
+
+        .header-content {
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .header-nav {
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .hero {
+            padding: 60px 0;
+        }
+
+        .hero-text h1 {
+            font-size: 36px;
+        }
+
+        .hero-stats {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .tech-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .section-title {
+            font-size: 28px;
+        }
+
+        .solutions-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .capabilities-list {
+            grid-template-columns: 1fr;
+        }
+
+        .metrics-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .clients-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .cta-title {
+            font-size: 28px;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-cta-primary, .btn-cta-secondary {
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .footer-content {
+            grid-template-columns: 1fr;
+            gap: 32px;
+            text-align: center;
+        }
+    }
+
+    /* ========== 홈 버튼 ========== */
+    .back-btn-fixed {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #0066cc;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 13px;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        box-shadow: 0 4px 15px rgba(0,102,204,0.3);
+    }
+
+    .back-btn-fixed:hover {
+        background: #0052a3;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,102,204,0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    /* ========== 애니메이션 ========== */
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+
+    .fade-in-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .scale-in {
+        opacity: 0;
+        transform: scale(0.95);
+        transition: all 0.5s ease;
+    }
+
+    .scale-in.visible {
+        opacity: 1;
+        transform: scale(1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- 홈 버튼 -->
+<a href="{% url 'templates_app:home' %}" class="back-btn-fixed">← 홈으로</a>
+
+<!-- 헤더 -->
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">DL</div>
+                <div class="company-info">
+                    <h1>{{ company_name }}</h1>
+                    <p>{{ company_subtitle }}</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="#solutions" class="nav-link">솔루션</a>
+                <a href="#technology" class="nav-link">기술</a>
+                <a href="#metrics" class="nav-link">성과</a>
+                <a href="#clients" class="nav-link">고객사</a>
+                <a href="#contact" class="contact-btn">상담 문의</a>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<!-- 히어로 섹션 -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="fade-in-up">{{ company_slogan }}</h1>
+                <p class="subtitle fade-in-up">{{ company_subtitle }}</p>
+
+                <div class="hero-stats fade-in-up">
+                    <div class="stat-item">
+                        <span class="stat-number">{{ established }}</span>
+                        <span class="stat-label">설립</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">{{ team_size }}</span>
+                        <span class="stat-label">전문 인력</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">{{ projects }}</span>
+                        <span class="stat-label">프로젝트</span>
+                    </div>
+                </div>
+
+                <div class="cta-buttons fade-in-up">
+                    <a href="#contact" class="btn-primary">🔧 기술 상담</a>
+                    <a href="#solutions" class="btn-secondary">📋 솔루션 보기</a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="tech-grid scale-in">
+                    <div class="tech-item">
+                        <div class="tech-icon">📡</div>
+                        <h4>무선 통신</h4>
+                        <p>Wi-Fi 6/6E</p>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">🔒</div>
+                        <h4>보안 솔루션</h4>
+                        <p>Enterprise급</p>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">🌐</div>
+                        <h4>네트워크</h4>
+                        <p>클라우드 관리</p>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">📊</div>
+                        <h4>분석 플랫폼</h4>
+                        <p>실시간 모니터링</p>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">🤖</div>
+                        <h4>AI 최적화</h4>
+                        <p>지능형 관리</p>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">⚡</div>
+                        <h4>고성능</h4>
+                        <p>Gbps급 처리</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 솔루션 섹션 -->
+<section class="solutions-section" id="solutions">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title fade-in-up">핵심 솔루션</h2>
+            <p class="section-subtitle fade-in-up">차세대 무선 통신 기술로 비즈니스의 디지털 인프라를 구축합니다</p>
+        </div>
+
+        <div class="solutions-grid">
+            {% for service in services %}
+            <div class="solution-card fade-in-up">
+                <div class="solution-icon">{{ service.icon }}</div>
+                <h3>{{ service.title }}</h3>
+                <p class="solution-description">{{ service.description }}</p>
+                <ul class="solution-features">
+                    {% for feature in service.features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- 기술 역량 섹션 -->
+<section class="tech-capabilities" id="technology">
+    <div class="container">
+        <div class="capabilities-content">
+            <div class="capabilities-text">
+                <h2 class="fade-in-up">검증된 기술 역량</h2>
+                <p class="fade-in-up">20년 이상의 무선 통신 전문 기술력과 지속적인 R&D 투자로 최신 기술을 선도하고 있습니다. Wi-Fi 6/6E, IoT, 5G 등 차세대 기술에 대한 완벽한 솔루션을 제공합니다.</p>
+
+                <div class="capabilities-list">
+                    <div class="capability-item scale-in">
+                        <span class="capability-icon">🔬</span>
+                        <h4>R&D 센터</h4>
+                        <p>자체 연구소 운영</p>
+                    </div>
+                    <div class="capability-item scale-in">
+                        <span class="capability-icon">📜</span>
+                        <h4>기술 특허</h4>
+                        <p>핵심 기술 보유</p>
+                    </div>
+                    <div class="capability-item scale-in">
+                        <span class="capability-icon">🏆</span>
+                        <h4>국제 인증</h4>
+                        <p>글로벌 표준 준수</p>
+                    </div>
+                    <div class="capability-item scale-in">
+                        <span class="capability-icon">🔄</span>
+                        <h4>지속적 혁신</h4>
+                        <p>차세대 기술 개발</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-visual fade-in-up">
+                <div style="text-align: center; font-size: 120px; color: rgba(255,255,255,0.1);">📡</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 성과 지표 섹션 -->
+<section class="metrics-section" id="metrics">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title fade-in-up">숫자로 보는 성과</h2>
+            <p class="section-subtitle fade-in-up">고객사와 함께 만들어온 성공적인 결과들</p>
+        </div>
+
+        <div class="metrics-grid">
+            {% for achievement in achievements %}
+            <div class="metric-card fade-in-up">
+                <span class="metric-number">{{ achievement.count }}</span>
+                <div class="metric-label">{{ achievement.title }}</div>
+                <div class="metric-description">{{ achievement.description }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- 고객사 섹션 -->
+<section class="clients-section" id="clients">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title fade-in-up">신뢰하는 고객사</h2>
+            <p class="section-subtitle fade-in-up">다양한 업계의 리더들이 선택한 검증된 솔루션</p>
+        </div>
+
+        <div class="clients-grid">
+            {% for testimonial in testimonials %}
+            <div class="client-card fade-in-up">
+                <div class="client-logo">{{ testimonial.company|first }}</div>
+                <div class="client-quote">{{ testimonial.comment }}</div>
+                <div class="client-info">
+                    <h4>{{ testimonial.name }}</h4>
+                    <p>{{ testimonial.company }} {{ testimonial.position }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- 최종 CTA 섹션 -->
+<section class="final-cta" id="contact">
+    <div class="container">
+        <div class="cta-content">
+            <h2 class="cta-title fade-in-up">프로젝트 시작하기</h2>
+            <p class="cta-subtitle fade-in-up">{{ company_name }}의 전문 기술로 여러분의 비즈니스를 한 단계 발전시켜보세요</p>
+
+            <div class="cta-buttons">
+                <a href="tel:{{ phone }}" class="btn-cta-primary">📞 {{ phone }}</a>
+                <a href="mailto:{{ email }}" class="btn-cta-secondary">📧 기술 문의</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 푸터 -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>{{ company_name }}</h4>
+                <p>{{ established }}</p>
+                <p>{{ team_size }}</p>
+                <p>📍 {{ address }}</p>
+                <p>📞 {{ phone }}</p>
+                <p>📧 {{ email }}</p>
+                <p>🌐 {{ website }}</p>
+            </div>
+            <div class="footer-section">
+                <h4>기술 솔루션</h4>
+                {% for service in services %}
+                <a href="#solutions">{{ service.title }}</a>
+                {% endfor %}
+            </div>
+            <div class="footer-section">
+                <h4>기업 정보</h4>
+                <a href="#technology">기술 역량</a>
+                <a href="#metrics">성과 지표</a>
+                <a href="#clients">고객사</a>
+                <a href="#contact">채용 정보</a>
+                <a href="#contact">파트너십</a>
+            </div>
+            <div class="footer-section">
+                <h4>기술 지원</h4>
+                <a href="#contact">기술 상담</a>
+                <a href="tel:{{ phone }}">전화 지원</a>
+                <a href="mailto:{{ email }}">이메일 문의</a>
+                <a href="#contact">온사이트 지원</a>
+                <a href="#contact">원격 지원</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 {{ company_name }}. All rights reserved.</p>
+            <p style="margin-top: 8px;">차세대 무선 통신 기술의 리더</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // 스크롤 애니메이션
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 100);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-up, .scale-in').forEach(el => {
+        observer.observe(el);
+    });
+
+    // 부드러운 스크롤
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // 헤더 스크롤 효과
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('.header');
+        const scrolled = window.pageYOffset;
+
+        if (scrolled > 50) {
+            header.style.background = 'rgba(255, 255, 255, 0.98)';
+            header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+        } else {
+            header.style.background = 'rgba(255, 255, 255, 0.98)';
+            header.style.boxShadow = 'none';
+        }
+    });
+
+    // 숫자 카운트 애니메이션
+    function animateNumbers() {
+        const numbers = document.querySelectorAll('.metric-number');
+        numbers.forEach(number => {
+            const target = parseInt(number.textContent.replace(/[^0-9]/g, ''));
+            if (target && target > 0) {
+                const suffix = number.textContent.replace(/[0-9]/g, '');
+                let current = 0;
+                const increment = target / 40;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    number.textContent = Math.floor(current) + suffix;
+                }, 50);
+            }
+        });
+    }
+
+    // 메트릭 섹션이 보일 때 숫자 애니메이션 실행
+    const metricsSection = document.querySelector('.metrics-section');
+    const metricsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    animateNumbers();
+                }, 300);
+                metricsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+    metricsObserver.observe(metricsSection);
+
+    // 기술 아이템 호버 효과
+    document.querySelectorAll('.tech-item, .solution-card, .metric-card, .client-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+</script>
+{% endblock %}
