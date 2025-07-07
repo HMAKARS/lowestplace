@@ -19,4 +19,6 @@ urlpatterns = [
     path('landing-traditional/', views.traditional_landing, name='traditional_landing'),
     # IT/통신 솔루션 기업 랜딩페이지
     path('techlink/', views.business_service_landing, name='business_service_landing'),
+    # 사찰 랜딩페이지
+    path('temple/', views.temple_landing, name='temple_landing'),
 ]

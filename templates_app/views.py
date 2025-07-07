@@ -297,3 +297,20 @@ def business_service_landing(request):
         ]
     }
     return render(request, 'templates_app/business_service_landing.html', context)
+
+def temple_landing(request):
+    """사찰 랜딩페이지 - 전통 불교 사찰 스타일"""
+    context = {
+        'temple_name': '금강사',
+        'temple_slogan': '마음의 평화와 깨달음의 길',
+        'temple_subtitle': '천년의 역사와 전통을 간직한 수행도량',
+        'phone': '033-123-4567',
+        'email': 'info@keumgang.or.kr',
+        'address': '강원도 평창군 대관령면 금강길 108',
+        'sunday_prayer': '일요일 오전 10시',
+        'weekday_prayer': '매일 새벽 4시 30분',
+        'abbot_name': '혜안 스님',
+        'established': '신라 문무왕 7년 (서기 667년)',
+        'tradition': '1350년 전통'
+    }
+    return render(request, 'templates_app/temple_landing.html', context)

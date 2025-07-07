@@ -1,0 +1,1429 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ temple_name }} - {{ temple_slogan }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Noto Serif KR', serif;
+        line-height: 1.8;
+        color: #3d2817;
+        background: #faf8f3;
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 30px;
+    }
+
+    /* 홈 버튼 */
+    .back-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 5%;
+        background: linear-gradient(135deg, #8b4513, #cd853f);
+        color: #faf8f3;
+        padding: 12px 25px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        z-index: 1001;
+        box-shadow: 0 10px 25px rgba(139, 69, 19, 0.3);
+        border: 2px solid rgba(205, 133, 63, 0.3);
+    }
+
+    .back-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(139, 69, 19, 0.4);
+        color: #faf8f3;
+        text-decoration: none;
+        border-color: #cd853f;
+    }
+
+    /* 장식적 요소들 */
+    .ornament {
+        font-family: 'Nanum Myeongjo', serif;
+        color: #8b4513;
+        text-align: center;
+        font-size: 1.5rem;
+        margin: 20px 0;
+    }
+
+    .ornament::before,
+    .ornament::after {
+        content: '☸';
+        margin: 0 15px;
+        font-size: 1.2rem;
+        opacity: 0.7;
+    }
+
+    .divider {
+        text-align: center;
+        margin: 50px 0;
+        color: #8b4513;
+    }
+
+    .divider::before {
+        content: '';
+        display: inline-block;
+        width: 100px;
+        height: 1px;
+        background: linear-gradient(to right, transparent, #8b4513, transparent);
+        vertical-align: middle;
+        margin-right: 20px;
+    }
+
+    .divider::after {
+        content: '';
+        display: inline-block;
+        width: 100px;
+        height: 1px;
+        background: linear-gradient(to right, transparent, #8b4513, transparent);
+        vertical-align: middle;
+        margin-left: 20px;
+    }
+
+    /* 네비게이션 */
+    .navbar {
+        background: rgba(250, 248, 243, 0.95);
+        box-shadow: 0 2px 10px rgba(61, 40, 23, 0.1);
+        border-bottom: 3px solid #8b4513;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        padding: 20px 0;
+        backdrop-filter: blur(10px);
+    }
+
+    .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #8b4513;
+        text-decoration: none;
+        text-shadow: 1px 1px 2px rgba(139, 69, 19, 0.3);
+        position: relative;
+    }
+
+    .logo::before {
+        content: '☸';
+        margin-right: 10px;
+        font-size: 1.5rem;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 40px;
+        list-style: none;
+    }
+
+    .nav-links a {
+        color: #3d2817;
+        text-decoration: none;
+        font-weight: 400;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        padding: 5px 15px;
+        border-radius: 20px;
+    }
+
+    .nav-links a::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(139, 69, 19, 0.05));
+        border-radius: 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .nav-links a:hover::before {
+        opacity: 1;
+    }
+
+    .nav-links a:hover {
+        color: #8b4513;
+        transform: translateY(-1px);
+    }
+
+    /* 히어로 섹션 */
+    .hero {
+        min-height: 100vh;
+        background: linear-gradient(
+            rgba(250, 248, 243, 0.9),
+            rgba(250, 248, 243, 0.8)
+        ), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="lotus" patternUnits="userSpaceOnUse" width="150" height="150"><rect width="150" height="150" fill="%23faf8f3"/><circle cx="75" cy="75" r="50" fill="none" stroke="%238b4513" stroke-width="0.5" opacity="0.1"/><path d="M75 40 Q60 60 75 95 Q90 60 75 40" fill="%238b4513" opacity="0.05"/></pattern></defs><rect width="1200" height="800" fill="url(%23lotus)"/></svg>');
+        background-size: cover;
+        background-attachment: fixed;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        padding: 150px 0 80px;
+        position: relative;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(ellipse at center, transparent 20%, rgba(250, 248, 243, 0.3) 80%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .hero-lotus {
+        font-size: 4rem;
+        color: #8b4513;
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.3);
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .hero-title {
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #3d2817;
+        margin-bottom: 30px;
+        line-height: 1.2;
+        text-shadow: 1px 1px 3px rgba(61, 40, 23, 0.2);
+    }
+
+    .hero-subtitle {
+        font-family: 'Noto Serif KR', serif;
+        font-size: 1.8rem;
+        color: #5d4e37;
+        margin-bottom: 20px;
+        font-weight: 500;
+        opacity: 0.9;
+    }
+
+    .verse-container {
+        background: rgba(255, 255, 255, 0.7);
+        border: 2px solid #8b4513;
+        border-radius: 15px;
+        padding: 35px 40px;
+        margin: 40px 0;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(139, 69, 19, 0.1);
+        backdrop-filter: blur(5px);
+    }
+
+    .verse-container::before {
+        content: '🪷';
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2rem;
+        background: #faf8f3;
+        padding: 0 10px;
+    }
+
+    .verse-text {
+        font-family: 'Noto Serif KR', serif;
+        font-size: 1.4rem;
+        color: #3d2817;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+
+    .verse-reference {
+        font-size: 1.1rem;
+        color: #8b4513;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .temple-description {
+        font-size: 1.2rem;
+        color: #5d4e37;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto 0;
+    }
+
+    /* 법회 시간 섹션 */
+    .prayer-times {
+        padding: 100px 0;
+        background: #faf8f3;
+        position: relative;
+    }
+
+    .prayer-times::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, rgba(139, 69, 19, 0.05), transparent);
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+
+    .section-title {
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 3rem;
+        font-weight: 700;
+        color: #3d2817;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #8b4513, transparent);
+    }
+
+    .section-subtitle {
+        font-family: 'Noto Serif KR', serif;
+        font-size: 1.4rem;
+        color: #5d4e37;
+        font-weight: 500;
+        margin-bottom: 20px;
+    }
+
+    .prayer-schedule {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 40px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .prayer-item {
+        background: rgba(255, 255, 255, 0.8);
+        border: 2px solid #cd853f;
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-align: center;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(139, 69, 19, 0.1);
+    }
+
+    .prayer-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #8b4513, #cd853f, #8b4513);
+    }
+
+    .prayer-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(139, 69, 19, 0.2);
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+    .prayer-icon {
+        font-size: 3rem;
+        color: #8b4513;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 3px rgba(139, 69, 19, 0.3);
+    }
+
+    .prayer-name {
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #3d2817;
+        margin-bottom: 15px;
+    }
+
+    .prayer-time {
+        font-size: 1.3rem;
+        color: #8b4513;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .prayer-description {
+        color: #5d4e37;
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+
+    /* 수행 프로그램 섹션 */
+    .programs {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #f5f3ee 0%, #faf8f3 100%);
+        position: relative;
+    }
+
+    .programs::before {
+        content: '';
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(139, 69, 19, 0.03) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .programs::after {
+        content: '';
+        position: absolute;
+        bottom: 50px;
+        right: 50px;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(139, 69, 19, 0.02) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .programs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .program-card {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #cd853f;
+        border-radius: 15px;
+        padding: 35px 25px;
+        transition: all 0.3s ease;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(139, 69, 19, 0.08);
+    }
+
+    .program-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(139, 69, 19, 0.02), rgba(205, 133, 63, 0.02));
+        border-radius: 15px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .program-card:hover::before {
+        opacity: 1;
+    }
+
+    .program-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(139, 69, 19, 0.15);
+        border-color: #8b4513;
+    }
+
+    .program-symbol {
+        font-size: 2.5rem;
+        color: #8b4513;
+        margin-bottom: 20px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .program-title {
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #3d2817;
+        margin-bottom: 15px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .program-description {
+        color: #5d4e37;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .program-schedule {
+        background: rgba(139, 69, 19, 0.1);
+        padding: 10px 15px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #8b4513;
+        font-weight: 600;
+        border: 1px solid rgba(139, 69, 19, 0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    /* 스님 소개 섹션 */
+    .monks {
+        padding: 100px 0;
+        background: #faf8f3;
+    }
+
+    .monks-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 50px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .monk-card {
+        text-align: center;
+        padding: 40px 30px;
+        background: rgba(255, 255, 255, 0.6);
+        border: 2px solid #cd853f;
+        border-radius: 25px;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .monk-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(from 0deg, transparent, rgba(139, 69, 19, 0.05), transparent);
+        animation: rotate 20s linear infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .monk-card:hover::before {
+        opacity: 1;
+    }
+
+    @keyframes rotate {
+        to { transform: rotate(360deg); }
+    }
+
+    .monk-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 20px 50px rgba(139, 69, 19, 0.2);
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .monk-portrait {
+        width: 150px;
+        height: 200px;
+        background: linear-gradient(135deg, #8b4513, #cd853f);
+        border-radius: 15px;
+        margin: 0 auto 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        color: #faf8f3;
+        box-shadow: 0 10px 25px rgba(139, 69, 19, 0.3);
+        position: relative;
+        z-index: 1;
+        border: 3px solid #faf8f3;
+    }
+
+    .monk-name {
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #3d2817;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .monk-position {
+        color: #8b4513;
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .monk-bio {
+        color: #5d4e37;
+        line-height: 1.6;
+        font-size: 0.95rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* 사찰 역사 섹션 */
+    .history {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #3d2817 0%, #4d3319 100%);
+        color: #faf8f3;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .history::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dharma" patternUnits="userSpaceOnUse" width="100" height="100"><rect width="100" height="100" fill="none"/><circle cx="50" cy="50" r="30" stroke="%23cd853f" stroke-width="0.5" fill="none" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23dharma)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .history .section-title {
+        color: #cd853f;
+    }
+
+    .history .section-subtitle {
+        color: rgba(250, 248, 243, 0.8);
+    }
+
+    .timeline {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        padding: 50px 0;
+        z-index: 1;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(to bottom, #8b4513, #cd853f, #8b4513);
+        transform: translateX(-50%);
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 60px;
+        display: flex;
+        align-items: center;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content {
+        margin-right: 60px;
+        text-align: right;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content {
+        margin-left: 60px;
+    }
+
+    .timeline-marker {
+        position: absolute;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        background: #cd853f;
+        border: 4px solid #3d2817;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+    }
+
+    .timeline-content {
+        background: rgba(205, 133, 63, 0.1);
+        border: 1px solid rgba(205, 133, 63, 0.3);
+        border-radius: 15px;
+        padding: 25px;
+        flex: 1;
+        backdrop-filter: blur(5px);
+    }
+
+    .timeline-year {
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #cd853f;
+        margin-bottom: 10px;
+    }
+
+    .timeline-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #faf8f3;
+    }
+
+    .timeline-description {
+        color: rgba(250, 248, 243, 0.8);
+        line-height: 1.6;
+    }
+
+    /* CTA 섹션 */
+    .cta {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #f5f3ee 0%, #faf8f3 100%);
+        text-align: center;
+        position: relative;
+    }
+
+    .cta::before {
+        content: '☸';
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 8rem;
+        color: rgba(139, 69, 19, 0.05);
+        z-index: 0;
+    }
+
+    .cta-content {
+        max-width: 700px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-title {
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #3d2817;
+        margin-bottom: 25px;
+    }
+
+    .cta-subtitle {
+        font-family: 'Noto Serif KR', serif;
+        font-size: 1.4rem;
+        color: #5d4e37;
+        margin-bottom: 40px;
+        font-weight: 500;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 25px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 18px 40px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.4s ease;
+        display: inline-block;
+        cursor: pointer;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: all 0.5s ease;
+        transform: translate(-50%, -50%);
+    }
+
+    .btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #8b4513, #cd853f);
+        color: #faf8f3;
+        box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(139, 69, 19, 0.4);
+        color: #faf8f3;
+        text-decoration: none;
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: #8b4513;
+        border-color: #8b4513;
+    }
+
+    .btn-outline:hover {
+        background: #8b4513;
+        color: #faf8f3;
+        text-decoration: none;
+    }
+
+    /* 연락처 섹션 */
+    .contact {
+        padding: 80px 0;
+        background: #faf8f3;
+        border-top: 3px solid #8b4513;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+    }
+
+    .contact-item {
+        text-align: center;
+        padding: 40px 25px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid #cd853f;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(139, 69, 19, 0.05), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .contact-item:hover::before {
+        left: 100%;
+    }
+
+    .contact-item:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(139, 69, 19, 0.15);
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .contact-icon {
+        font-size: 2.5rem;
+        color: #8b4513;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 3px rgba(139, 69, 19, 0.3);
+    }
+
+    .contact-item h4 {
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #3d2817;
+        margin-bottom: 15px;
+    }
+
+    .contact-item p {
+        color: #5d4e37;
+        margin-bottom: 8px;
+        line-height: 1.5;
+    }
+
+    /* 반응형 디자인 */
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+
+        /* 모바일에서 홈 버튼 스타일 */
+        .back-btn {
+            position: fixed;
+            bottom: 5%;
+            right: 1%;
+            transform: translateX(-20%);
+            background: rgba(139, 69, 19, 0.5);
+            backdrop-filter: blur(10px);
+            color: #faf8f3;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
+            border: 1px solid rgba(205, 133, 63, 0.3);
+        }
+
+        .back-btn:hover {
+            background: rgba(139, 69, 19, 0.7);
+            transform: translateX(-50%) translateY(-1px);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.3);
+            color: #faf8f3;
+            text-decoration: none;
+            border-color: #cd853f;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+        }
+
+        .prayer-schedule {
+            grid-template-columns: 1fr;
+        }
+
+        .monks-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .timeline::before {
+            left: 20px;
+        }
+
+        .timeline-item {
+            padding-left: 50px;
+        }
+
+        .timeline-item .timeline-content {
+            margin-left: 0;
+            margin-right: 0;
+            text-align: left;
+        }
+
+        .timeline-marker {
+            left: 20px;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            padding: 0 20px;
+        }
+
+        .verse-container {
+            padding: 25px 20px;
+        }
+    }
+
+    /* 스크롤 애니메이션 */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease;
+    }
+
+    .scroll-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* 커스텀 스크롤바 */
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f5f3ee;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, #8b4513, #cd853f);
+        border-radius: 6px;
+        border: 2px solid #f5f3ee;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(to bottom, #cd853f, #8b4513);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- 홈 버튼 -->
+{% if request.resolver_match.url_name != 'home' %}
+<a href="{% url 'templates_app:home' %}" class="back-btn">← 홈으로</a>
+{% endif %}
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="container">
+        <div class="nav-content">
+            <a href="#" class="logo">{{ temple_name }}</a>
+            <ul class="nav-links">
+                <li><a href="#prayer">법회</a></li>
+                <li><a href="#programs">수행</a></li>
+                <li><a href="#monks">스님</a></li>
+                <li><a href="#history">역사</a></li>
+                <li><a href="#contact">오시는길</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-lotus scroll-animate">🪷</div>
+            <h1 class="hero-title scroll-animate">{{ temple_name }}</h1>
+            <p class="hero-subtitle scroll-animate">{{ temple_slogan }}</p>
+            
+            <div class="verse-container scroll-animate">
+                <p class="verse-text">
+                    "일체유심조(一切唯心造)"<br>
+                    모든 것은 마음이 만들어내는 것이니<br>
+                    마음을 깨끗이 하면 부처님의 세계가 나타난다
+                </p>
+                <p class="verse-reference">- 화엄경 -</p>
+            </div>
+
+            <p class="temple-description scroll-animate">
+                {{ temple_subtitle }}
+            </p>
+
+            <div class="ornament scroll-animate">나무아미타불</div>
+        </div>
+    </div>
+</section>
+
+<!-- Prayer Times -->
+<section class="prayer-times" id="prayer">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <h2 class="section-title">법회 안내</h2>
+            <div class="ornament">⟡</div>
+            <p class="section-subtitle">부처님의 가르침을 함께 나누는 시간</p>
+        </div>
+        
+        <div class="prayer-schedule">
+            <div class="prayer-item scroll-animate">
+                <div class="prayer-icon">🛕</div>
+                <h3 class="prayer-name">일요 법회</h3>
+                <div class="prayer-time">{{ sunday_prayer }}</div>
+                <p class="prayer-description">
+                    대중과 함께하는 정기 법회로 법문과 독경, 참회, 기도로 진행됩니다.
+                    초보자도 쉽게 참여할 수 있습니다.
+                </p>
+            </div>
+            
+            <div class="prayer-item scroll-animate">
+                <div class="prayer-icon">🌅</div>
+                <h3 class="prayer-name">새벽 예불</h3>
+                <div class="prayer-time">{{ weekday_prayer }}</div>
+                <p class="prayer-description">
+                    하루를 시작하는 새벽 예불로 108배와 독경을 통해 
+                    몸과 마음을 정화합니다.
+                </p>
+            </div>
+            
+            <div class="prayer-item scroll-animate">
+                <div class="prayer-icon">📿</div>
+                <h3 class="prayer-name">저녁 예불</h3>
+                <div class="prayer-time">매일 오후 6:00</div>
+                <p class="prayer-description">
+                    하루를 마무리하는 저녁 예불로 타종과 함께
+                    온 세상의 평화를 기원합니다.
+                </p>
+            </div>
+            
+            <div class="prayer-item scroll-animate">
+                <div class="prayer-icon">🧘</div>
+                <h3 class="prayer-name">참선 수행</h3>
+                <div class="prayer-time">토요일 오후 2:00</div>
+                <p class="prayer-description">
+                    좌선과 행선을 통해 마음을 고요히 하고
+                    진정한 자아를 찾아가는 수행 시간입니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="divider">☸ ☸ ☸</div>
+
+<!-- Programs -->
+<section class="programs" id="programs">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <h2 class="section-title">수행 프로그램</h2>
+            <div class="ornament">⟡</div>
+            <p class="section-subtitle">마음의 평화를 찾아가는 다양한 수행법</p>
+        </div>
+        
+        <div class="programs-grid">
+            <div class="program-card scroll-animate">
+                <div class="program-symbol">🧘‍♀️</div>
+                <h3 class="program-title">템플스테이</h3>
+                <p class="program-description">
+                    사찰에서의 하루 또는 며칠간의 체험을 통해 불교 문화를 경험합니다.
+                </p>
+                <div class="program-schedule">1박2일 / 2박3일 프로그램</div>
+            </div>
+            
+            <div class="program-card scroll-animate">
+                <div class="program-symbol">🍵</div>
+                <h3 class="program-title">다도 수행</h3>
+                <p class="program-description">
+                    차를 마시며 마음을 고요히 하고 선(禪)의 정신을 체득합니다.
+                </p>
+                <div class="program-schedule">매주 수요일 오후 2:00</div>
+            </div>
+            
+            <div class="program-card scroll-animate">
+                <div class="program-symbol">📖</div>
+                <h3 class="program-title">불교 대학</h3>
+                <p class="program-description">
+                    체계적인 불교 교리 학습과 경전 공부를 통해 지혜를 증장합니다.
+                </p>
+                <div class="program-schedule">3개월 과정 / 매주 화요일</div>
+            </div>
+            
+            <div class="program-card scroll-animate">
+                <div class="program-symbol">🎨</div>
+                <h3 class="program-title">사경 수행</h3>
+                <p class="program-description">
+                    경전을 정성껏 베껴 쓰며 마음을 집중하고 공덕을 쌓습니다.
+                </p>
+                <div class="program-schedule">매월 첫째 주 토요일</div>
+            </div>
+            
+            <div class="program-card scroll-animate">
+                <div class="program-symbol">🥁</div>
+                <h3 class="program-title">불교 음악</h3>
+                <p class="program-description">
+                    범패와 찬불가를 배우며 소리로써 마음을 정화합니다.
+                </p>
+                <div class="program-schedule">매주 목요일 오후 7:00</div>
+            </div>
+            
+            <div class="program-card scroll-animate">
+                <div class="program-symbol">🌿</div>
+                <h3 class="program-title">108배 수행</h3>
+                <p class="program-description">
+                    108번의 절을 통해 번뇌를 소멸하고 몸과 마음을 정화합니다.
+                </p>
+                <div class="program-schedule">매일 새벽 예불 후</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="divider">☸ ☸ ☸</div>
+
+<!-- Monks -->
+<section class="monks" id="monks">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <h2 class="section-title">스님 소개</h2>
+            <div class="ornament">⟡</div>
+            <p class="section-subtitle">부처님의 가르침을 전하는 스승님들</p>
+        </div>
+        
+        <div class="monks-grid">
+            <div class="monk-card scroll-animate">
+                <div class="monk-portrait">🙏</div>
+                <h3 class="monk-name">{{ abbot_name }}</h3>
+                <p class="monk-position">주지스님</p>
+                <p class="monk-bio">
+                    해인사 강원을 졸업하고 30년간 수행 정진하셨습니다. 
+                    자비로운 법문으로 많은 신도들에게 깨달음의 길을 안내하고 계십니다.
+                </p>
+            </div>
+            
+            <div class="monk-card scroll-animate">
+                <div class="monk-portrait">📿</div>
+                <h3 class="monk-name">지혜 스님</h3>
+                <p class="monk-position">교무스님</p>
+                <p class="monk-bio">
+                    동국대학교 불교학과를 졸업하고 교육과 포교에 힘쓰고 계십니다. 
+                    청년 법회와 불교대학을 담당하고 있습니다.
+                </p>
+            </div>
+            
+            <div class="monk-card scroll-animate">
+                <div class="monk-portrait">🪷</div>
+                <h3 class="monk-name">자비 스님</h3>
+                <p class="monk-position">총무스님</p>
+                <p class="monk-bio">
+                    사찰 운영과 신도 관리를 담당하며, 템플스테이 프로그램을 
+                    기획하고 운영하고 계십니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Temple History -->
+<section class="history" id="history">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <h2 class="section-title">사찰 역사</h2>
+            <div class="ornament">⟡</div>
+            <p class="section-subtitle">{{ established }}에 창건된 천년고찰의 역사</p>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item scroll-animate">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">667년</div>
+                    <h4 class="timeline-title">사찰 창건</h4>
+                    <p class="timeline-description">
+                        의상대사께서 문무왕의 명을 받아 호국 사찰로 창건하였습니다.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="timeline-item scroll-animate">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">1232년</div>
+                    <h4 class="timeline-title">대웅전 중건</h4>
+                    <p class="timeline-description">
+                        몽골 침입으로 소실된 전각들을 보조국사께서 중건하셨습니다.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="timeline-item scroll-animate">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">1592년</div>
+                    <h4 class="timeline-title">임진왜란과 승병</h4>
+                    <p class="timeline-description">
+                        서산대사와 사명대사께서 승병을 이끌고 나라를 구하는데 앞장섰습니다.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="timeline-item scroll-animate">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">1950년</div>
+                    <h4 class="timeline-title">한국전쟁과 복구</h4>
+                    <p class="timeline-description">
+                        전쟁으로 일부 전각이 소실되었으나 신도들의 원력으로 복구되었습니다.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="timeline-item scroll-animate">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">2020년</div>
+                    <h4 class="timeline-title">템플스테이 지정</h4>
+                    <p class="timeline-description">
+                        한국불교문화사업단으로부터 우수 템플스테이 운영사찰로 지정되었습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="divider">☸ ☸ ☸</div>
+
+<!-- CTA Section -->
+<section class="cta">
+    <div class="container">
+        <div class="cta-content">
+            <h2 class="cta-title scroll-animate">마음의 안식처, {{ temple_name }}</h2>
+            <p class="cta-subtitle scroll-animate">
+                번잡한 일상에서 벗어나 고요한 산사에서<br>
+                진정한 평화와 행복을 찾아보세요.
+            </p>
+            
+            <div class="cta-buttons scroll-animate">
+                <a href="#contact" class="btn btn-primary">사찰 방문하기</a>
+                <a href="mailto:{{ email }}" class="btn btn-outline">문의하기</a>
+            </div>
+            
+            <div class="ornament scroll-animate">성불하십시오</div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="section-header scroll-animate">
+            <h2 class="section-title">오시는 길</h2>
+            <div class="ornament">⟡</div>
+        </div>
+        
+        <div class="contact-grid">
+            <div class="contact-item scroll-animate">
+                <div class="contact-icon">📞</div>
+                <h4>대표번호</h4>
+                <p>{{ phone }}</p>
+                <p>평일 09:00 - 17:00</p>
+                <p>주말 09:00 - 18:00</p>
+            </div>
+            
+            <div class="contact-item scroll-animate">
+                <div class="contact-icon">📧</div>
+                <h4>이메일</h4>
+                <p>{{ email }}</p>
+                <p>24시간 접수 가능</p>
+                <p>템플스테이 및 법회 문의</p>
+            </div>
+            
+            <div class="contact-item scroll-animate">
+                <div class="contact-icon">📍</div>
+                <h4>주소</h4>
+                <p>{{ address }}</p>
+                <p>서울에서 2시간 거리</p>
+                <p>무료 주차장 완비</p>
+            </div>
+            
+            <div class="contact-item scroll-animate">
+                <div class="contact-icon">⏰</div>
+                <h4>운영 시간</h4>
+                <p>연중무휴 개방</p>
+                <p>법당 05:00 - 21:00</p>
+                <p>종무소 09:00 - 17:00</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // 스크롤 애니메이션
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    // 모든 scroll-animate 요소를 관찰
+    document.querySelectorAll('.scroll-animate').forEach(el => {
+        observer.observe(el);
+    });
+
+    // 부드러운 스크롤
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const navHeight = document.querySelector('.navbar').offsetHeight;
+                const targetPosition = target.offsetTop - navHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // 네비게이션 스크롤 효과
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 100) {
+            navbar.style.background = 'rgba(250, 248, 243, 0.98)';
+            navbar.style.boxShadow = '0 5px 20px rgba(61, 40, 23, 0.15)';
+        } else {
+            navbar.style.background = 'rgba(250, 248, 243, 0.95)';
+            navbar.style.boxShadow = '0 2px 10px rgba(61, 40, 23, 0.1)';
+        }
+    });
+
+    // 페이지 로딩 시 순차적 애니메이션
+    window.addEventListener('load', () => {
+        const heroElements = document.querySelectorAll('.hero .scroll-animate');
+        heroElements.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, index * 300 + 500);
+        });
+    });
+
+    // 연꽃 부유 효과
+    const lotus = document.querySelector('.hero-lotus');
+    if (lotus) {
+        let floatDirection = 1;
+        setInterval(() => {
+            floatDirection *= -1;
+            lotus.style.transform = `translateY(${floatDirection * 5}px) rotate(${floatDirection * 5}deg)`;
+        }, 3000);
+    }
+
+    // 법륜 회전 효과
+    document.querySelectorAll('.ornament').forEach((el, index) => {
+        el.addEventListener('mouseover', () => {
+            el.style.transform = 'rotate(360deg)';
+            el.style.transition = 'transform 1s ease';
+        });
+        el.addEventListener('mouseout', () => {
+            el.style.transform = 'rotate(0deg)';
+        });
+    });
+</script>
+{% endblock %}
